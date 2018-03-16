@@ -14,3 +14,4 @@ npm install reformation-js
 | `schema` | Object | true | A JSON Schema object representing the form you wish to render |
 | `onChange` | Function | false | A function triggered when a field's value is changed |
 | `header` | String | false | Text to be displayed in the header above the form |
+| `isChildForm` | Boolean | false | Internal prop to be used by reformation. Do not set manually. |
