@@ -43,11 +43,12 @@ class Form extends React.Component {
       isChildForm
     } = this.props;
 
-    if(onChange && isChildForm) {
-      return onChange(data);
+    if(!onChange && !isChildForm) {
+      console.warn('No "onChange" action provided for form');
+      return;
     }
 
-    console.warn('No "onChange" action provided for form');
+    return onChange(data);
   }
 
   renderFields() {
