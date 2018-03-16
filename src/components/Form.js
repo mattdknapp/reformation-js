@@ -13,16 +13,16 @@ class Form extends React.Component {
 
   getRootSchema() {
     const {
-      isTopLevel,
+      isChildForm,
       getRootSchema,
       schema
     } = this.props;
 
-    if(isTopLevel) {
-      return schema;
+    if(isChildForm) {
+      return getRootSchema();
     }
 
-    return getRootSchema();
+    return schema;
   }
 
   getpath() {
@@ -40,15 +40,15 @@ class Form extends React.Component {
     // event is the original event triggering the change.
     const {
       onChange,
-      isTopLevel
+      isChildForm
     } = this.props;
 
-    if(!onChange && isTopLevel) {
+    if(!onChange && !isChildForm) {
       console.warn('No "onChange" action provided for form');
       return;
     }
 
-    onChange(data);
+    return onChange(data);
   }
 
   renderFields() {
@@ -83,34 +83,34 @@ class Form extends React.Component {
     const {
       header,
       schema,
-      isTopLevel
+      isChildForm
     } = this.props;
 
-    if(isTopLevel) {
+    if(isChildForm) {
       return (
-        <div className="card">
-          <div className="card-body">
-            <div className="card-header">
-              {header}
-            </div>
-            <form className="test-form">
-              <div className="row">
-                {this.renderFields()}
-              </div>
-            </form>
-          </div>
-        </div>
+        this.renderFields()
       );
     }
 
     return (
-      this.renderFields()
+      <div className="card">
+        <div className="card-body">
+          <div className="card-header">
+            {header}
+          </div>
+          <form className="test-form">
+            <div className="row">
+              {this.renderFields()}
+            </div>
+          </form>
+        </div>
+      </div>
     );
   }
 };
 
 Form.propTypes = {
-  isTopLevel: PropTypes.bool,
+  isChildForm: PropTypes.bool,
   schema: PropTypes.object.isRequired,
   onChange: PropTypes.func,
   includeContainer: PropTypes.bool,

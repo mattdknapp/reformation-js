@@ -100,6 +100,7 @@ const FormField = (props) => {
           schema={schema}
           header="Another Test!"
           path={newPath}
+          isChildForm={true}
           onChange={handleChange}
           getRootSchema={getRootSchema}
         />
