@@ -98,7 +98,6 @@ const FormField = (props) => {
         <Form
           key={`form-${fieldKey}`}
           schema={schema}
-          header="Another Test!"
           path={newPath}
           isChildForm={true}
           onChange={handleChange}
