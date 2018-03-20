@@ -1,7 +1,12 @@
 import React from 'react';
+import Reference from '../lib/Reference';
+import translateReferences from '../lib/TranslateReferences';
+import Ajv from 'ajv';
 import Form from './Form';
 import CheckBox from './CheckBox';
 import StringInput from './StringInput';
+
+const ajv = new Ajv();
 
 const getFieldSize = (entry) => {
   if(!entry.formMeta) {
@@ -40,22 +45,48 @@ const eventIsProcessed = (event) => {
   return keys.reduce(keyCheck, true);
 };
 
+const isValid = ({
+  schema,
+  value,
+  error,
+  getRootSchema,
+}) => {
+  if(error) {
+    return error;
+  }
+
+  const shouldValidate = schema && schema.type !== 'object';
+
+  if(shouldValidate) {
+    const safeSchema = translateReferences({
+      schema,
+      originalSchema: getRootSchema()
+    });
+    return ajv.validate(safeSchema, value);
+  }
+
+  return true;
+};
+
 const FormField = (props) => {
   const {
     schema,
     fieldKey,
     getRootSchema,
     path,
-    onChange
+    onChange,
+    formState,
+    error,
   } = props;
 
   const {
     type,
     title,
-    description
+    description,
   } = schema;
 
   const newPath = `${path}/${fieldKey}`;
+  const ref = Reference({ path: newPath, schema: formState });
   const handleChange = (eventData) => {
     if(eventIsProcessed(eventData)) {
       return onChange(eventData);
@@ -70,6 +101,14 @@ const FormField = (props) => {
     });
   };
 
+  const value = ref.valueOrElse('');
+  const valid = isValid({
+    schema,
+    error,
+    value,
+    getRootSchema,
+  });
+
   switch(type) {
     case 'string':
       return (
@@ -77,6 +116,8 @@ const FormField = (props) => {
           schema={schema}
           fieldKey={fieldKey}
           path={newPath}
+          error={error}
+          value={value}
           handleChange={handleChange}
           groupClass={getFieldSize(schema)}
           getRootSchema={getRootSchema}
@@ -88,6 +129,7 @@ const FormField = (props) => {
           label={title}
           fieldId={fieldKey}
           path={newPath}
+          value={value}
           handleChange={handleChange}
           groupClass={getFieldSize(schema)}
         />
@@ -99,6 +141,8 @@ const FormField = (props) => {
           key={`form-${fieldKey}`}
           schema={schema}
           path={newPath}
+          formState={formState}
+          value={value}
           isChildForm={true}
           onChange={handleChange}
           getRootSchema={getRootSchema}
