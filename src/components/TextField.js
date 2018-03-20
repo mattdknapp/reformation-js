@@ -1,14 +1,9 @@
 import React from 'react';
-
-const safeString = (string) => String(string || '')
-
-const safeFunc = (func) => (
-  (arg) => {
-    if(func && typeof func === 'function') {
-      return func(arg);
-    }
-  }
-)
+import {
+  safeString,
+  safeFunc,
+  getErrorMessage,
+} from '../lib/utilities';
 
 const TextField = (props) => {
   const {
@@ -20,9 +15,13 @@ const TextField = (props) => {
     onChange,
     handleBlur,
     value,
+    schema,
+    error,
   } = props;
 
-  const fieldClasses = `form-control ${safeString(fieldClass)}`.trim();
+  const invalidClass = error ? 'is-invalid' : '';
+  const errorMessage = getErrorMessage(error);
+  const fieldClasses = `form-control ${invalidClass} ${safeString(fieldClass)}`.trim();
   const groupClasses = `form-group ${safeString(groupClass)}`.trim();
   const handleChange = safeFunc(onChange);
   const onBlur = safeFunc(handleBlur);
@@ -36,9 +35,13 @@ const TextField = (props) => {
         type="text"
         className={fieldClasses}
         id={safeString(fieldId)}
+        value={value}
         placeholder={safeString(placeholder)}
         onChange={handleChange}
         onBlur={onBlur}/>
+      <div className="invalid-feedback">
+        {errorMessage}
+      </div>
     </div>
   )
 }

@@ -16,19 +16,19 @@ const getValue = ({ path, schema }) => {
 
 const Maybe = () => ({
   refWrapper (value){
-    return RefWrapper(value)
+    return Reference(value);
   },
   nothing() {
-    return Nothing()
+    return Nothing();
   },
   of(value) {
-    return this.fromNullable(value)
+    return this.fromNullable(value);
   },
   isNothing() {
-    return false
+    return false;
   },
-  isRefWrapper() {
-    return false
+  isReference() {
+    return false;
   },
   fromNullable(nullable) {
     if(!nullable || !nullable.path || !nullable.schema) {
@@ -50,8 +50,8 @@ const Nothing = (message, instantiator) => ({
     const errorMessage = message || 'No value provided';
     throw new TypeError(errorMessage);
   },
-  valueOrElse() {
-    return '';
+  valueOrElse(other) {
+    return other;
   },
   isNothing() {
     return true;
@@ -61,7 +61,7 @@ const Nothing = (message, instantiator) => ({
   }
 });
 
-const RefWrapper = ({
+const Reference = ({
   path,
   schema
 }) => ({
@@ -78,14 +78,16 @@ const RefWrapper = ({
   schema() {
     return schema;
   },
-  isRefWrapper() { return  true },
+  isReference() {
+    return true;
+  },
   map(func) {
-    return this.of(func(this.value()))
+    return this.of(func(this.value()));
   }
 });
 
-const Reference = (val) => {
+const RefWrapper = (val) => {
   return Maybe().fromNullable(val);
 };
 
-export default Reference;
+export default RefWrapper;

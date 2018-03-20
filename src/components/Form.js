@@ -53,7 +53,8 @@ class Form extends React.Component {
 
   renderFields() {
     const {
-      schema
+      schema,
+      formState,
     } = this.props;
 
     const {
@@ -70,6 +71,7 @@ class Form extends React.Component {
             key={i}
             schema={properties[entry]}
             path={path}
+            formState={formState}
             fieldKey={entry}
             onChange={handleChange}
             getRootSchema={this.getRootSchema}
@@ -111,10 +113,12 @@ class Form extends React.Component {
 
 Form.propTypes = {
   isChildForm: PropTypes.bool,
+  formState: PropTypes.object,
   schema: PropTypes.object.isRequired,
   onChange: PropTypes.func,
   includeContainer: PropTypes.bool,
-  header: PropTypes.string
+  header: PropTypes.string,
+  path: PropTypes.string
 };
 
 export default Form;

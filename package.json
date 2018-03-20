@@ -22,6 +22,7 @@
     "bootstrap": "^4.0.0"
   },
   "dependencies": {
+    "ajv": "^6.3.0",
     "react": "^16.2.0",
     "react-proptypes": "^1.0.0"
   },

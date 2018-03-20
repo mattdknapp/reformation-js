@@ -10,12 +10,16 @@ const inputMap = {
   select: Select
 };
 
+// from -> to
 const childPropsMap = {
   'title': 'label',
   'fieldKey': 'fieldKey',
   'groupClass': 'groupClass',
   'handleChange': 'onChange',
   'description': 'placeholder',
+  'value': 'value',
+  'schema': 'schema',
+  'error': 'error'
 };
 
 const childPropsKeys = Object.keys(childPropsMap);
@@ -62,7 +66,8 @@ const getFieldProps = (props) => {
 const StringInput = (props) => {
   const {
     schema,
-    getRootSchema
+    getRootSchema,
+    value
   } = props;
 
   const {
