@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CuratedLabel from './CuratedLabel';
+import { getErrorMessage } from '../lib/utilities';
 
 const Option = (props) => {
   const {
@@ -17,10 +18,12 @@ const Select = (props) => {
     enums,
     label,
     groupClass,
-    onChange
+    onChange,
+    error,
   } = props;
 
   const groupClasses = `form-group ${String(groupClass || '')}`.trim();
+  const errorMessage = getErrorMessage(error);
 
   return (
     <div className={groupClasses}>
@@ -34,6 +37,9 @@ const Select = (props) => {
           )
         })}
       </select>
+      <div className="invalid-feedback">
+        {errorMessage}
+      </div>
     </div>
   )
 };

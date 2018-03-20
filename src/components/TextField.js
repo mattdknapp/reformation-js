@@ -1,22 +1,9 @@
 import React from 'react';
-
-const safeString = (string) => String(string || '')
-
-const safeFunc = (func) => (
-  (arg) => {
-    if(func && typeof func === 'function') {
-      return func(arg);
-    }
-  }
-);
-
-const getErrorMessage = (error) => {
-  if(typeof error === 'string') {
-    return error;
-  }
-
-  return 'Invalid';
-};
+import {
+  safeString,
+  safeFunc,
+  getErrorMessage,
+} from '../lib/utilities';
 
 const TextField = (props) => {
   const {

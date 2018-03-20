@@ -129,6 +129,7 @@ const FormField = (props) => {
           label={title}
           fieldId={fieldKey}
           path={newPath}
+          error={error}
           value={value}
           handleChange={handleChange}
           groupClass={getFieldSize(schema)}
