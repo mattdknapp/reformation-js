@@ -66,7 +66,7 @@ The following keywords are recognized.
 ### size
 Sets the sixe of the input field created.
 
-| Value |
+| Values |
 | :-- |
 | `xSmall` |
 | `small` |
@@ -76,6 +76,12 @@ Sets the sixe of the input field created.
 
 ### viewAs
 Allows control of the field type by overriding the default.
+
+| Values |
+| :-- |
+| `radioButtons` |
+| `textField` |
+| `select` |
 
 # Examples
 
