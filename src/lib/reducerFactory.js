@@ -71,11 +71,20 @@ const duckFactory = ({
     }
   };
 
-  const setField = (payload) => {
+  const setField = ({ path, value }) => {
+    const payload = {
+      path,
+      value
+    };
     return { type: SET_FIELD, payload };
   };
 
-  const setError = (payload) => {
+  const setError = ({ path, value }) => {
+    const payload = {
+      path,
+      value,
+    };
+
     return { type: SET_ERROR, payload };
   };
 
