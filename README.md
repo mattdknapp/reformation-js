@@ -43,6 +43,39 @@ structure:
 | `actionTypes` | Object | A collection of namespaced action types used by the outputted reducer of `createReducer`. |
 | `actionCreators` | Object | A collection of actionCreators for use of the outputted reducer of `createReducer`. |
 
+# JSON Schema interpretation
+
+## JSON Schema Keywords
+Several JSON Schema keywords are used to determine how the form should be
+renderd.
+
+### Keyword: type
+Determines what type of field will be rendered. Can be overwritten.
+
+### Keyword: title
+Will be rendered as the form field's label if present.
+
+### Keyword: description
+Will be used as a placeholder on a text input if present.
+
+## Custom Meta Attributes
+`reformation-js` provides the ability for extra meta date about the form to be
+embeded in an object in the provided schema by using the attribute `formMeta`.
+The following keywords are recognized.
+
+### size
+Sets the sixe of the input field created.
+
+| Value |
+| :-- |
+| `xSmall` |
+| `small` |
+| `medium` |
+| `large` |
+| `full` |
+
+### viewAs
+Allows control of the field type by overriding the default.
 
 # Examples
 
