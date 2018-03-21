@@ -77,7 +77,7 @@ const FormField = (props) => {
     path,
     onChange,
     formState,
-    error,
+    formErrors,
   } = props;
 
   const {
@@ -87,7 +87,8 @@ const FormField = (props) => {
   } = schema;
 
   const newPath = `${path}/${fieldKey}`;
-  const ref = Reference({ path: newPath, schema: formState });
+  const dataRef = Reference({ path: newPath, schema: formState });
+  const errorRef = Reference({ path: newPath, schema: formErrors });
   const handleChange = (eventData) => {
     if(eventIsProcessed(eventData)) {
       return onChange(eventData);
@@ -103,7 +104,8 @@ const FormField = (props) => {
     });
   };
 
-  const value = ref.valueOrElse('');
+  const value = dataRef.valueOrElse('');
+  const error = errorRef.valueOrElse(null);
   const valid = isValid({
     schema,
     error,
@@ -145,6 +147,7 @@ const FormField = (props) => {
           schema={schema}
           path={newPath}
           formState={formState}
+          formErrors={formErrors}
           value={value}
           isChildForm={true}
           onChange={handleChange}

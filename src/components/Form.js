@@ -56,6 +56,7 @@ class Form extends React.Component {
     const {
       schema,
       formState,
+      formErrors,
     } = this.props;
 
     const {
@@ -73,6 +74,7 @@ class Form extends React.Component {
             schema={properties[entry]}
             path={path}
             formState={formState}
+            formErrors={formErrors}
             fieldKey={entry}
             onChange={handleChange}
             getRootSchema={this.getRootSchema}
@@ -115,6 +117,7 @@ class Form extends React.Component {
 Form.propTypes = {
   isChildForm: PropTypes.bool,
   formState: PropTypes.object,
+  formErrors: PropTypes.object,
   schema: PropTypes.object.isRequired,
   onChange: PropTypes.func,
   includeContainer: PropTypes.bool,
