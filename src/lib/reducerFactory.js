@@ -7,6 +7,7 @@ const testReducer = (func) => {
   const correctState = returnedState && returnedState.testText === testText;
   if(!correctState) {
     console.error('Invalid reduce function provided');
+    console.error('For more information on how to structure a reducer function visit: https://redux.js.org/basics/reducers')
   }
 };
 
