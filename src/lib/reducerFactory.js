@@ -92,6 +92,14 @@ const duckFactory = ({
     return { type: LOAD_FORM, payload };
   };
 
+  const loadErrors = (payload) => {
+    return { type: LOAD_ERRORS, payload };
+  };
+
+  const clearForm = () => {
+    return { type: CLEAR_FORM };
+  };
+
   const createReducer = (func) => {
     if(!func) {
       return reducer;
@@ -107,10 +115,17 @@ const duckFactory = ({
     createReducer,
     actionTypes: {
       SET_FIELD,
+      LOAD_FORM,
+      SET_ERROR,
+      LOAD_ERRORS,
+      CLEAR,
     },
     actionCreators: {
       setField,
       loadForm,
+      setError,
+      loadErrors,
+      clearForm,
     }
   };
 };

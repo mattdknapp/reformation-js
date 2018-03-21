@@ -33,6 +33,7 @@ const eventKeys = [
   'value',
   'path',
   'event',
+  'field',
 ];
 
 const keyCheck = (pre, next) => {
@@ -96,6 +97,7 @@ const FormField = (props) => {
 
     onChange({
       path: newPath,
+      field: fieldKey,
       event: eventData,
       value
     });

@@ -34,8 +34,9 @@ class Form extends React.Component {
   }
 
   handleChange(data) {
-    // data consists of an object of the form: { path, value, event }
+    // data consists of an object of the form: { path, field, value, event }
     // path is the path to the field being altered.
+    // field is the lowest level key of the path.
     // value is the new value given.
     // event is the original event triggering the change.
     const {
