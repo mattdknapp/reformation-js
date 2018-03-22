@@ -163,7 +163,22 @@ export default reducer;
 
 ## Passing custom errors to a form
 
-Our schema for this example:
+`reformation-js` accepts custom errors provided by the parent application.
+These errors can be passed using the `formErrors` prop and is expected to be
+an object that mirrors the structure of the forms data with the error message
+provided in place of the form's data. For example, using the schema below if
+wanted to provide a custome error message to the `street` field you would
+provide a json object with the following form:
+```json
+{
+  "street": "My custom error here."
+}
+
+```
+
+A more complete example is located after the schema.
+
+### Example Schema
 ```json
 {
   "title": "Simple Address",
@@ -262,7 +277,8 @@ Our schema for this example:
   }
 }
 ```
-And our example code:
+
+### Example custom error
 ```
 import React from 'react';
 import Form from 'reformation-js';
@@ -283,10 +299,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formData: {
-        fieldOne: 'default',
-        fieldTwo: 'anotherDefault',
-      }
+      formData: startingFormData,
+      formError: formErrors
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -314,13 +328,16 @@ class App extends React.Component {
 
   render() {
     const {
-      formData
+      formData,
+      formErrors
     } = this.state;
 
     return (
       <Form
         schema={addressSchema}
         formState={formData}
+        formErrors={formErrors}
+        onChange={this.handleChange}
       />
     )
   }
