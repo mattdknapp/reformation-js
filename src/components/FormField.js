@@ -5,6 +5,7 @@ import Ajv from 'ajv';
 import Form from './Form';
 import CheckBox from './CheckBox';
 import StringInput from './StringInput';
+import FormTable from './FormTable/Table';
 
 const ajv = new Ajv();
 
@@ -86,93 +87,160 @@ const processValue = (target) => {
   return value;
 };
 
-const FormField = (props) => {
-  const {
-    schema,
-    fieldKey,
-    getRootSchema,
-    path,
-    onChange,
-    formState,
-    formErrors,
-  } = props;
+class FormField extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const {
-    type,
-    title,
-    description,
-  } = schema;
+    this.getRefs = this.getRefs.bind(this);
+    this.newPath = this.newPath.bind(this);
+  }
 
-  const newPath = `${path}/${fieldKey}`;
-  const dataRef = Reference({ path: newPath, schema: formState });
-  const errorRef = Reference({ path: newPath, schema: formErrors });
-  const value = dataRef.valueOrElse('');
-  const error = errorRef.valueOrElse(null);
-  const valid = isValid({
-    schema,
-    error,
-    value,
-    getRootSchema,
-  });
+  shouldComponentUpdate(nextProps) {
+    const {
+      dataRef,
+      errorRef,
+    } = this.getRefs();
 
-  const handleChange = (eventData) => {
-    if(eventIsProcessed(eventData)) {
-      return onChange(eventData);
-    }
+    const {
+      dataRef: nextDataRef,
+      errorRef: nextErrorRef,
+    } = this.getRefs(nextProps);
 
-    const value = processValue(eventData.target);
+    const dataHasChanged = dataRef.valueOrElse('') !== nextDataRef.valueOrElse('');
+    const errorHasChanged = errorRef.valueOrElse('') !== nextErrorRef.valueOrElse('');
 
-    onChange({
-      path: newPath,
-      field: fieldKey,
-      event: eventData,
+    return (dataHasChanged || errorHasChanged);
+  }
+
+  newPath() {
+    const {
+      path,
+      fieldKey,
+    } = this.props;
+
+    return `${path}/${fieldKey}`;
+  }
+
+  getRefs(nextProps) {
+    const {
+      formState,
+      formErrors,
+    } = nextProps || this.props;
+
+    const newPath = this.newPath();
+    const dataRef = Reference({ path: newPath, schema: formState });
+    const errorRef = Reference({ path: newPath, schema: formErrors });
+
+    return {
+      dataRef,
+      errorRef,
+    };
+  }
+
+  render() {
+    const {
+      schema,
+      fieldKey,
+      getRootSchema,
+      onChange,
+      formState,
+      formErrors,
+    } = this.props;
+
+    const {
+      type,
+      title,
+      description,
+    } = schema;
+
+    const {
+      dataRef,
+      errorRef,
+    } = this.getRefs();
+
+    const newPath = this.newPath();
+    const value = dataRef.valueOrElse('');
+    const error = errorRef.valueOrElse(null);
+    const valid = isValid({
+      schema,
+      error,
       value,
+      getRootSchema,
     });
-  };
 
-  switch(type) {
-    case 'string':
-      return (
-        <StringInput
-          schema={schema}
-          fieldKey={fieldKey}
-          path={newPath}
-          error={error}
-          value={value}
-          handleChange={handleChange}
-          groupClass={getFieldSize(schema)}
-          getRootSchema={getRootSchema}
-        />
-      );
-    case 'boolean':
-      return (
-        <CheckBox
-          label={title}
-          fieldId={fieldKey}
-          path={newPath}
-          error={error}
-          value={value}
-          handleChange={handleChange}
-          groupClass={getFieldSize(schema)}
-        />
-      )
-    case 'object':
-      return ([
-        <hr key={`hr-${fieldKey}`}/>,
-        <Form
-          key={`form-${fieldKey}`}
-          schema={schema}
-          path={newPath}
-          formState={formState}
-          formErrors={formErrors}
-          value={value}
-          isChildForm={true}
-          onChange={handleChange}
-          getRootSchema={getRootSchema}
-        />
-      ])
-    default:
-      return '';
+    const handleChange = (eventData) => {
+      if(eventIsProcessed(eventData)) {
+        return onChange(eventData);
+      }
+
+      const value = processValue(eventData.target);
+
+      onChange({
+        path: newPath,
+        field: fieldKey,
+        event: eventData,
+        value,
+      });
+    };
+
+    switch(type) {
+      case 'string':
+        return (
+          <StringInput
+            schema={schema}
+            fieldKey={fieldKey}
+            path={newPath}
+            error={error}
+            value={value}
+            handleChange={handleChange}
+            groupClass={getFieldSize(schema)}
+            getRootSchema={getRootSchema}
+          />
+        );
+      case 'boolean':
+        return (
+          <CheckBox
+            label={title}
+            fieldId={fieldKey}
+            path={newPath}
+            error={error}
+            value={value}
+            handleChange={handleChange}
+            groupClass={getFieldSize(schema)}
+          />
+        );
+      case 'object':
+        return ([
+          <hr key={`hr-${fieldKey}`}/>,
+          <Form
+            key={`form-${fieldKey}`}
+            schema={schema}
+            path={newPath}
+            formState={formState}
+            formErrors={formErrors}
+            value={value}
+            isChildForm={true}
+            onChange={handleChange}
+            getRootSchema={getRootSchema}
+          />
+        ]);
+      case 'array':
+        return (
+          <FormTable
+            key={`form-${fieldKey}`}
+            schema={schema}
+            path={newPath}
+            formState={formState}
+            formErrors={formErrors}
+            value={value}
+            isChildForm={true}
+            onChange={handleChange}
+            getRootSchema={getRootSchema}
+          />
+        );
+      default:
+        return '';
+    }
   }
 };
 
