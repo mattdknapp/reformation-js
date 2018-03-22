@@ -272,10 +272,11 @@ const startingFormData = {
   street: '225 N Trade St'
   city: 'Matthews',
   state: 'North Carolina',
-  zipcode: '28105'
+  zipcode: '28105-'
 };
 
 const formErrors = {
+  zipcode: 'Any error you please'
 };
 
 class App extends React.Component {
