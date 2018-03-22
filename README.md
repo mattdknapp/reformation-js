@@ -71,7 +71,7 @@ Will be rendered as the form field's label if present.
 Will be used as a placeholder on a text input if present.
 
 ## Custom Meta Attributes
-`reformation-js` provides the ability for extra meta date about the form to be
+`reformation-js` provides the ability for extra meta data about the form to be
 embeded in an object in the provided schema by using the attribute `formMeta`.
 The following keywords are recognized.
 
