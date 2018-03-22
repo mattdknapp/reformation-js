@@ -19,6 +19,17 @@ The Form component is the primary interface for `reformation-js`.
 | `onChange` | Function | false | A function triggered when a field's value is changed |
 | `header` | String | false | Text to be displayed in the header above the form |
 
+## onChange
+When data has changed on a field inside of `Form` the `onChanged` method will
+be called with an object with the following format passed in as it's argument:
+
+| Attribute | Description |
+| :-- | :-- |
+| `path` | The JSON Schema path of the data that has changed. |
+| `field` | The key of the field that has changed. |
+| `value` | The new value of the field. |
+| `event` | The original event that triggered the change. |
+
 # reducerFactory
 `reformation-js` includes a helper function exported as `reducerFactory` to
 facilitate quick and easy creation of reducer functions to be used with
@@ -342,6 +353,4 @@ class App extends React.Component {
     )
   }
 };
-
-
 ```
