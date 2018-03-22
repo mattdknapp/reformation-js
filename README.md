@@ -290,7 +290,7 @@ A more complete example is located after the schema.
 ```
 
 ### Example custom error
-```
+```javascript
 import React from 'react';
 import Form from 'reformation-js';
 import addressSchema from './addressSchema.json';
