@@ -69,6 +69,23 @@ const isValid = ({
   return true;
 };
 
+const processValue = (target) => {
+  if(!target) {
+    return null;
+  }
+
+  const {
+    value,
+    type,
+  } = target;
+
+  if(type === 'checkbox') {
+    return !(value === 'on');
+  }
+
+  return value;
+};
+
 const FormField = (props) => {
   const {
     schema,
@@ -89,21 +106,6 @@ const FormField = (props) => {
   const newPath = `${path}/${fieldKey}`;
   const dataRef = Reference({ path: newPath, schema: formState });
   const errorRef = Reference({ path: newPath, schema: formErrors });
-  const handleChange = (eventData) => {
-    if(eventIsProcessed(eventData)) {
-      return onChange(eventData);
-    }
-
-    const { value } = eventData.target;
-
-    onChange({
-      path: newPath,
-      field: fieldKey,
-      event: eventData,
-      value
-    });
-  };
-
   const value = dataRef.valueOrElse('');
   const error = errorRef.valueOrElse(null);
   const valid = isValid({
@@ -112,6 +114,21 @@ const FormField = (props) => {
     value,
     getRootSchema,
   });
+
+  const handleChange = (eventData) => {
+    if(eventIsProcessed(eventData)) {
+      return onChange(eventData);
+    }
+
+    const value = processValue(eventData.target);
+
+    onChange({
+      path: newPath,
+      field: fieldKey,
+      event: eventData,
+      value,
+    });
+  };
 
   switch(type) {
     case 'string':
