@@ -4,7 +4,6 @@ import TableBody from './TableBody';
 
 const FormTable = (props) => {
   const {
-    schema,
     value,
     schema,
     path,
@@ -12,12 +11,27 @@ const FormTable = (props) => {
     formErrors,
     onChange,
     getRootSchema,
+    fieldKey,
   } = props;
 
   const {
     items: { properties }
   } = schema;
 
+  const removeItem = (event, index) => {
+    const filterItem = (entry, i) =>  i !== index;
+
+    const newValue = value.filter(filterItem);
+
+    onChange({
+      path,
+      event,
+      field: fieldKey,
+      value: newValue,
+    });
+  };
+
+  console.log(schema);
   return (
     <div className="col-sm-12">
       <table className="table table-bordered">
@@ -28,8 +42,15 @@ const FormTable = (props) => {
           schema={schema}
           properties={properties}
           value={value}
+          removeItem={removeItem}
         />
       </table>
+      <button
+        type="button"
+        className="btn btn-success float-right"
+      >
+        Add Row
+      </button>
     </div>
   );
 };

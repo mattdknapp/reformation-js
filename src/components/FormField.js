@@ -229,12 +229,13 @@ class FormField extends React.Component {
           <FormTable
             key={`form-${fieldKey}`}
             schema={schema}
+            fieldKey={fieldKey}
             path={newPath}
             formState={formState}
             formErrors={formErrors}
             value={value}
             isChildForm={true}
-            onChange={handleChange}
+            onChange={onChange}
             getRootSchema={getRootSchema}
           />
         );

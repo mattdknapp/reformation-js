@@ -25,6 +25,9 @@ const TableHeader = (props) => {
             </th>
           )
         })}
+        <th>
+          Delete
+        </th>
       </tr>
     </thead>
   );
