@@ -2,6 +2,23 @@ import React from 'react';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
+const newObjectReducer = (pre, next) => {
+  return {
+    ...pre,
+    [next]: ''
+  };
+};
+
+const createNewItem = (schema) => {
+  const {
+    items: {
+      properties
+    }
+  } = schema;
+
+  return Object.keys(properties).reduce(newObjectReducer, {});
+};
+
 const FormTable = (props) => {
   const {
     value,
@@ -18,6 +35,21 @@ const FormTable = (props) => {
     items: { properties }
   } = schema;
 
+  const addItem = (event) => {
+    const newItem = createNewItem(schema);
+    const newValue = [
+      ...value,
+      newItem,
+    ];
+
+    onChange({
+      path,
+      event,
+      field: fieldKey,
+      value: newValue,
+    });
+  };
+
   const removeItem = (event, index) => {
     const filterItem = (entry, i) =>  i !== index;
 
@@ -31,7 +63,6 @@ const FormTable = (props) => {
     });
   };
 
-  console.log(schema);
   return (
     <div className="col-sm-12">
       <table className="table table-bordered">
@@ -48,6 +79,7 @@ const FormTable = (props) => {
       <button
         type="button"
         className="btn btn-success float-right"
+        onClick={addItem}
       >
         Add Row
       </button>
