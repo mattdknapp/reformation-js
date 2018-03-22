@@ -20,6 +20,7 @@ const Select = (props) => {
     groupClass,
     onChange,
     error,
+    value,
   } = props;
 
   const groupClasses = `form-group ${String(groupClass || '')}`.trim();
@@ -30,7 +31,10 @@ const Select = (props) => {
       <label>
         <CuratedLabel content={label}/>
       </label>
-      <select className="form-control form-control-sm" onChange={onChange}>
+      <select
+        className="form-control form-control-sm"
+        value={value}
+        onChange={onChange}>
         {enums.map((value, i) => {
           return (
             <Option value={value} key={i}/>

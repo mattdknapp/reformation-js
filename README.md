@@ -15,6 +15,7 @@ The Form component is the primary interface for `reformation-js`.
 | :--- | :--- | :--- | :--- |
 | `schema` | Object | true | A JSON Schema object representing the form you wish to render |
 | `formState` | Object | false | A Representation of the current state of the form |
+| `formErrors` | Object | false | Form related errors |
 | `onChange` | Function | false | A function triggered when a field's value is changed |
 | `header` | String | false | Text to be displayed in the header above the form |
 
@@ -158,4 +159,171 @@ const reducer = duckObject.createReducer();
 
 export { actionCreators };
 export default reducer;
+```
+
+## Passing custom errors to a form
+
+Our schema for this example:
+```json
+{
+  "title": "Simple Address",
+  "type": "object",
+  "properties": {
+    "street": {
+      "type": "string",
+      "title": "Physical Address",
+      "description": "123 Main Street",
+      "formMeta": {
+        "size": "small"
+      }
+    },
+    "city": {
+      "type": "string",
+      "title": "City",
+      "description": "Metropolis",
+      "formMeta": {
+        "size": "small"
+      }
+    },
+    "state": {
+      "type": "string",
+      "title": "State",
+      "enum": { "$ref": "#/definitions/states" },
+      "formMeta": {
+        "size": "xSmall"
+      }
+    },
+    "zipcode": {
+      "type": "string",
+      "title": "Zip",
+      "description": "12345-6789",
+      "formMeta": {
+        "size": "xSmall"
+      }
+    }
+  },
+  "required": ["street", "city", "state", "zipcode"],
+  "definitions": {
+    "states": [
+      "Alabama",
+      "Alaska",
+      "Arizona",
+      "Arkansas",
+      "California",
+      "Colorado",
+      "Connecticut",
+      "Delaware",
+      "District Of Columbia",
+      "Florida",
+      "Georgia",
+      "Guam",
+      "Hawaii",
+      "Idaho",
+      "Illinois",
+      "Indiana",
+      "Iowa",
+      "Kansas",
+      "Kentucky",
+      "Louisiana",
+      "Maine",
+      "Maryland",
+      "Massachusetts",
+      "Michigan",
+      "Minnesota",
+      "Mississippi",
+      "Missouri",
+      "Montana",
+      "Nebraska",
+      "Nevada",
+      "New Hampshire",
+      "New Jersey",
+      "New Mexico",
+      "New York",
+      "North Carolina",
+      "North Dakota",
+      "Ohio",
+      "Oklahoma",
+      "Oregon",
+      "Pennsylvania",
+      "Rhode Island",
+      "South Carolina",
+      "South Dakota",
+      "Tennessee",
+      "Texas",
+      "Utah",
+      "Vermont",
+      "Virgin Islands",
+      "Virginia",
+      "Washington",
+      "West Virginia",
+      "Wisconsin",
+      "Wyoming"
+    ]
+  }
+}
+```
+And our example code:
+```
+import React from 'react';
+import Form from 'reformation-js';
+import addressSchema from './addressSchema.json';
+
+const startingFormData = {
+  street: '225 N Trade St'
+  city: 'Matthews',
+  state: 'North Carolina',
+  zipcode: '28105'
+};
+
+const formErrors = {
+};
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      formData: {
+        fieldOne: 'default',
+        fieldTwo: 'anotherDefault',
+      }
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(data) {
+    const {
+      formData
+    } = this.state;
+
+    const {
+      field,
+      value,
+      event,
+    } = data;
+
+    const newFormData = {
+      ...formData,
+      [field]: value,
+    };
+
+    this.setState({
+      formData: newFormData
+    });
+  }
+
+  render() {
+    const {
+      formData
+    } = this.state;
+
+    return (
+      <Form
+        schema={addressSchema}
+        formState={formData}
+      />
+    )
+  }
+};
+
+
 ```
