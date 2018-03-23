@@ -1,12 +1,12 @@
 {
   "name": "reformation-js",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "A simple libary for generating html forms from JSON Schema using React.",
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node_modules/.bin/babel src -d dist/",
-    "postinstall": "npm run build"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
