@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Reference from '../lib/Reference';
 import translateReferences from '../lib/TranslateReferences';
 import Ajv from 'ajv';
@@ -243,6 +244,19 @@ class FormField extends React.Component {
         return '';
     }
   }
+};
+
+FormField.propTypes = {
+  schema: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
+  path: PropTypes.string,
+  formState: PropTypes.object,
+  formErrors: PropTypes.object,
+  fieldKey: PropTypes.string,
+  onChange: PropTypes.func,
+  getRootSchema: PropTypes.func,
 };
 
 export default FormField;
