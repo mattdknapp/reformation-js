@@ -1,4 +1,4 @@
-const replaceIndex = ({
+const replaceAtIndex = ({
   array,
   index,
   value,
@@ -13,10 +13,6 @@ const replaceIndex = ({
     trailing
   );
 };
-
-const testArray = [1,2,3,4,5]
-const testIndex = 2
-const testValue = 'two'
 
 const mergeAndSet = ({state, field, value}) => {
   const fieldArray = Array.isArray(field) ? field : field.replace('#/', '').split('/');
@@ -37,7 +33,7 @@ const mergeAndSet = ({state, field, value}) => {
       value
     });
 
-    const newArray = replaceIndex({
+    const newArray = replaceAtIndex({
       array: state,
       index: numberKey,
       value: newValue,
