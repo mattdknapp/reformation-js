@@ -1,4 +1,5 @@
 import React from 'react';
+import FieldLabel from './FieldLabel';
 import {
   safeString,
   safeFunc,
@@ -17,6 +18,7 @@ const TextField = (props) => {
     value,
     schema,
     error,
+    hideLabel,
   } = props;
 
   const invalidClass = error ? 'is-invalid' : '';
@@ -28,9 +30,11 @@ const TextField = (props) => {
 
   return (
     <div className={groupClasses}>
-      <label htmlFor={safeString(fieldId)}>
-        {safeString(label)}
-      </label>
+      <FieldLabel
+        fieldId={fieldId}
+        label={label}
+        hideLabel={hideLabel}
+      />
       <input
         type="text"
         className={fieldClasses}

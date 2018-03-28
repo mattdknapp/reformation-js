@@ -59,23 +59,21 @@ class Form extends React.Component {
       formErrors,
     } = this.props;
 
-    const {
-      properties
-    } = schema;
+    const key = schema.type === 'array' ? 'items' : 'properties';
 
     const path = this.getpath()
-    const entries = Object.keys(properties);
+    const entries = Object.entries(schema[key]);
     const handleChange = this.handleChange;
     return (
-      entries.map((entry, i) => {
+      entries.map(([key, value], i) => {
         return (
           <FormField
             key={i}
-            schema={properties[entry]}
+            schema={value}
             path={path}
             formState={formState}
             formErrors={formErrors}
-            fieldKey={entry}
+            fieldKey={key}
             onChange={handleChange}
             getRootSchema={this.getRootSchema}
           />
