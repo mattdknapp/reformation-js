@@ -57,7 +57,6 @@ class TableRow extends React.Component{
                 value={val}
                 path={`${path}`}
                 hideLabel={true}
-                inspect={true}
               />
             </td>
           );

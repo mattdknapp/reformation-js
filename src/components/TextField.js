@@ -1,29 +1,10 @@
 import React from 'react';
+import FieldLabel from './FieldLabel';
 import {
   safeString,
   safeFunc,
   getErrorMessage,
 } from '../lib/utilities';
-
-const FieldLabel = (props) => {
-  const {
-    fieldId,
-    label,
-    hideLabel,
-  } = props;
-
-  if(hideLabel) {
-    return (
-      <label htmlFor={safeString(fieldId)}/>
-    );
-  }
-
-  return (
-    <label htmlFor={safeString(fieldId)}>
-      {safeString(label)}
-    </label>
-  );
-};
 
 const TextField = (props) => {
   const {

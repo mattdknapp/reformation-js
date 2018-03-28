@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CuratedLabel from './CuratedLabel';
+import FieldLabel from './FieldLabel';
 import { getErrorMessage } from '../lib/utilities';
 
 const Option = (props) => {
@@ -21,6 +21,8 @@ const Select = (props) => {
     onChange,
     error,
     value,
+    hideLabel,
+    fieldId,
   } = props;
 
   const groupClasses = `form-group ${String(groupClass || '')}`.trim();
@@ -28,9 +30,11 @@ const Select = (props) => {
 
   return (
     <div className={groupClasses}>
-      <label>
-        <CuratedLabel content={label}/>
-      </label>
+      <FieldLabel
+        fieldId={fieldId}
+        label={label}
+        hideLabel={hideLabel}
+      />
       <select
         className="form-control form-control-sm"
         value={value}

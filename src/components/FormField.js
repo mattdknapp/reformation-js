@@ -185,9 +185,6 @@ class FormField extends React.Component {
       });
     };
 
-    if(this.props.inspect) {
-      console.log(this.props);
-    }
     switch(type) {
       case 'string':
         return (
@@ -263,7 +260,6 @@ FormField.propTypes = {
   fieldKey: PropTypes.string,
   onChange: PropTypes.func,
   getRootSchema: PropTypes.func,
-  inspect: PropTypes.bool,
   hideLabel: PropTypes.bool,
 };
 
