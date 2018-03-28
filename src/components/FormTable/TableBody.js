@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from '../TextField';
+import FormField from '../FormField';
 
 class TableRow extends React.Component{
   constructor(props) {
@@ -34,19 +35,29 @@ class TableRow extends React.Component{
   render() {
     const {
       value,
+      fieldKey,
+      path,
+      schema,
     } = this.props;
 
     const entries = Object.entries(value);
 
     return (
       <tr>
-        {entries.map(([key, value], i) => {
+        {entries.map(([key, val], i) => {
           return (
             <td
               key={i}
               className="text-center align-middle"
             >
-              <TextField
+              <FormField
+                { ...this.props }
+                schema={schema.items.properties[key]}
+                fieldKey={key}
+                value={val}
+                path={`${path}`}
+                hideLabel={true}
+                inspect={true}
               />
             </td>
           );
@@ -70,6 +81,7 @@ const TableBody = (props) => {
     properties,
     value,
     removeItem,
+    path,
   } = props;
 
   const safeValue = value || [];
@@ -79,10 +91,13 @@ const TableBody = (props) => {
       {safeValue.map((val, i) => {
         return(
           <TableRow
+            { ...props }
             value={val}
             key={i}
             index={i}
             removeItem={removeItem}
+            path={`${path}/${i}`}
+            fieldPath={path}
           />
         );
       })}

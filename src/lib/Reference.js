@@ -1,6 +1,6 @@
 const reduceValue = (pre, next) => {
 	if(pre) {
-    return pre[next];
+    return pre[Number(next) || next];
   }
 
   return null;

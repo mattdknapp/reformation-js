@@ -35,6 +35,9 @@ const FormTable = (props) => {
     items: { properties }
   } = schema;
 
+  const handleChange = (event, index) => {
+  };
+
   const addItem = (event) => {
     const newItem = createNewItem(schema);
     const newValue = [
@@ -70,7 +73,7 @@ const FormTable = (props) => {
           properties={properties}
         />
         <TableBody
-          schema={schema}
+          { ...props }
           properties={properties}
           value={value}
           removeItem={removeItem}

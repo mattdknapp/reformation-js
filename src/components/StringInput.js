@@ -19,7 +19,8 @@ const childPropsMap = {
   'description': 'placeholder',
   'value': 'value',
   'schema': 'schema',
-  'error': 'error'
+  'error': 'error',
+  'hideLabel': 'hideLabel',
 };
 
 const childPropsKeys = Object.keys(childPropsMap);

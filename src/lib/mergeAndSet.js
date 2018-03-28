@@ -1,3 +1,23 @@
+const replaceIndex = ({
+  array,
+  index,
+  value,
+}) => {
+  const trailingIndex = index + 1;
+  const leading = array.slice(0, index);
+  const trailing = array.slice(trailingIndex, array.length)
+
+  return [].concat(
+    leading,
+    value,
+    trailing
+  );
+};
+
+const testArray = [1,2,3,4,5]
+const testIndex = 2
+const testValue = 'two'
+
 const mergeAndSet = ({state, field, value}) => {
   const fieldArray = Array.isArray(field) ? field : field.replace('#/', '').split('/');
   const currentKey = fieldArray[0];
@@ -8,8 +28,30 @@ const mergeAndSet = ({state, field, value}) => {
     });
   }
   const newFieldArray = fieldArray.slice(1, fieldsRemaining);
+  const numberKey = Number(currentKey);
+
+  if(!isNaN(numberKey) && typeof numberKey === 'number') {
+    const newValue = mergeAndSet({
+      state: state[numberKey],
+      field: newFieldArray,
+      value
+    });
+
+    const newArray = replaceIndex({
+      array: state,
+      index: numberKey,
+      value: newValue,
+    });
+
+    return newArray;
+  }
+
   return Object.assign({}, state, {
-    [currentKey]: mergeAndSet({state: state[currentKey], field: newFieldArray, value})
+    [currentKey]: mergeAndSet({
+      state: state[Number(currentKey) || currentKey],
+      field: newFieldArray,
+      value
+    })
   });
 };
 

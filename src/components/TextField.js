@@ -5,6 +5,26 @@ import {
   getErrorMessage,
 } from '../lib/utilities';
 
+const FieldLabel = (props) => {
+  const {
+    fieldId,
+    label,
+    hideLabel,
+  } = props;
+
+  if(hideLabel) {
+    return (
+      <label htmlFor={safeString(fieldId)}/>
+    );
+  }
+
+  return (
+    <label htmlFor={safeString(fieldId)}>
+      {safeString(label)}
+    </label>
+  );
+};
+
 const TextField = (props) => {
   const {
     label,
@@ -17,6 +37,7 @@ const TextField = (props) => {
     value,
     schema,
     error,
+    hideLabel,
   } = props;
 
   const invalidClass = error ? 'is-invalid' : '';
@@ -28,9 +49,11 @@ const TextField = (props) => {
 
   return (
     <div className={groupClasses}>
-      <label htmlFor={safeString(fieldId)}>
-        {safeString(label)}
-      </label>
+      <FieldLabel
+        fieldId={fieldId}
+        label={label}
+        hideLabel={hideLabel}
+      />
       <input
         type="text"
         className={fieldClasses}

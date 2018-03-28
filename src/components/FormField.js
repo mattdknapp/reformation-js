@@ -146,6 +146,7 @@ class FormField extends React.Component {
       onChange,
       formState,
       formErrors,
+      hideLabel,
     } = this.props;
 
     const {
@@ -184,6 +185,9 @@ class FormField extends React.Component {
       });
     };
 
+    if(this.props.inspect) {
+      console.log(this.props);
+    }
     switch(type) {
       case 'string':
         return (
@@ -196,6 +200,7 @@ class FormField extends React.Component {
             handleChange={handleChange}
             groupClass={getFieldSize(schema)}
             getRootSchema={getRootSchema}
+            hideLabel={hideLabel}
           />
         );
       case 'boolean':
@@ -208,6 +213,7 @@ class FormField extends React.Component {
             value={value}
             handleChange={handleChange}
             groupClass={getFieldSize(schema)}
+            hideLabel={hideLabel}
           />
         );
       case 'object':
@@ -250,13 +256,15 @@ FormField.propTypes = {
   schema: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
-  ]),
+  ]).isRequired,
   path: PropTypes.string,
   formState: PropTypes.object,
   formErrors: PropTypes.object,
   fieldKey: PropTypes.string,
   onChange: PropTypes.func,
   getRootSchema: PropTypes.func,
+  inspect: PropTypes.bool,
+  hideLabel: PropTypes.bool,
 };
 
 export default FormField;
