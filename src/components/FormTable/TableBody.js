@@ -2,6 +2,13 @@ import React from 'react';
 import TextField from '../TextField';
 import FormField from '../FormField';
 
+const getKeysFromSchema = (schema) => {
+  const items = schema.items;
+  const properties = items ? items.properties : {};
+
+  return Object.keys(properties);
+};
+
 class TableRow extends React.Component{
   constructor(props) {
     super(props);
@@ -40,11 +47,12 @@ class TableRow extends React.Component{
       schema,
     } = this.props;
 
-    const entries = Object.entries(value);
+    const keys = getKeysFromSchema(schema);
 
     return (
       <tr>
-        {entries.map(([key, val], i) => {
+        {keys.map((key, i) => {
+          const val = value[key];
           return (
             <td
               key={i}
