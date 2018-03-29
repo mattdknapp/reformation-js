@@ -1,5 +1,5 @@
 const reduceValue = (pre, next) => {
-	if(pre) {
+  if(pre) {
     return pre[Number(next) || next];
   }
 
