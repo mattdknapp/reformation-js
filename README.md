@@ -102,6 +102,7 @@ Allows control of the field type by overriding the default.
 ```javascript
 import React from 'react';
 import Form from 'reformation-js';
+import 'bootstrap/dist/css/bootstrap.css';
 import someValidSchema from './honestlyValidJsonSchema.json';
 
 class App extends React.Component {
@@ -144,12 +145,15 @@ class App extends React.Component {
 
     return (
       <Form
+        header="My Amazing Form"
         schema={someValidSchema}
         formState={formData}
       />
     )
   }
 };
+
+export default App;
 ```
 
 ## Creating a reducer and action creators using reducerFactory
@@ -293,10 +297,11 @@ A more complete example is located after the schema.
 ```javascript
 import React from 'react';
 import Form from 'reformation-js';
+import 'bootstrap/dist/css/bootstrap.css';
 import addressSchema from './addressSchema.json';
 
 const startingFormData = {
-  street: '225 N Trade St'
+  street: '225 N Trade St',
   city: 'Matthews',
   state: 'North Carolina',
   zipcode: '28105-'
@@ -345,6 +350,7 @@ class App extends React.Component {
 
     return (
       <Form
+        header="address"
         schema={addressSchema}
         formState={formData}
         formErrors={formErrors}
