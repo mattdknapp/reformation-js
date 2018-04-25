@@ -97,7 +97,7 @@ const duckFactory = ({
   };
 
   const clearForm = () => {
-    return { type: CLEAR_FORM };
+    return { type: CLEAR };
   };
 
   const createReducer = (func) => {
