@@ -36,7 +36,6 @@ const FormFieldFactory = ({
 
     return (
       <Fragment>
-        <span>BINGO!</span>
         <FormField
           schema={schema.properties.city}
           path={pathRoot}
