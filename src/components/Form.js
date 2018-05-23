@@ -57,6 +57,7 @@ class Form extends React.Component {
       schema,
       formState,
       formErrors,
+      validator,
     } = this.props;
 
     const key = schema.type === 'array' ? 'items' : 'properties';
@@ -76,6 +77,7 @@ class Form extends React.Component {
             fieldKey={key}
             onChange={handleChange}
             getRootSchema={this.getRootSchema}
+            validator={validator}
           />
         )
       })
@@ -120,7 +122,8 @@ Form.propTypes = {
   onChange: PropTypes.func,
   includeContainer: PropTypes.bool,
   header: PropTypes.string,
-  path: PropTypes.string
+  path: PropTypes.string,
+  validator: PropTypes.object,
 };
 
 export default Form;

@@ -8,7 +8,7 @@ import CheckBox from './CheckBox';
 import StringInput from './StringInput';
 import FormTable from './FormTable/Table';
 
-const ajv = new Ajv();
+const rawAjv = new Ajv();
 
 const getFieldSize = (entry) => {
   if(!entry.formMeta) {
@@ -53,10 +53,13 @@ const isValid = ({
   value,
   error,
   getRootSchema,
+  validator,
 }) => {
   if(error) {
     return error;
   }
+
+  const ajv = validator || rawAjv;
 
   const shouldValidate = schema && schema.type !== 'object';
 
@@ -92,8 +95,19 @@ class FormField extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      innerSchema: null,
+    };
+
     this.getRefs = this.getRefs.bind(this);
     this.newPath = this.newPath.bind(this);
+    this.getInnerSchema = this.getInnerSchema.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      innerSchema: this.getInnerSchema(),
+    });
   }
 
   shouldComponentUpdate(nextProps) {
@@ -138,6 +152,28 @@ class FormField extends React.Component {
     };
   }
 
+  getInnerSchema() {
+    const {
+      schema,
+      getRootSchema,
+    } = this.props;
+
+    const {
+      innerSchema,
+    } = this.state;
+
+    if(innerSchema) {
+      return innerSchema;
+    }
+
+    if(schema.$ref) {
+      const ref = Reference({ path: schema.$ref, schema: getRootSchema() });
+      return ref.value();
+    }
+
+    return schema;
+  }
+
   render() {
     const {
       schema,
@@ -147,13 +183,16 @@ class FormField extends React.Component {
       formState,
       formErrors,
       hideLabel,
+      validator,
     } = this.props;
+
+    const innerSchema = this.getInnerSchema();
 
     const {
       type,
       title,
       description,
-    } = schema;
+    } = innerSchema;
 
     const {
       dataRef,
@@ -164,10 +203,11 @@ class FormField extends React.Component {
     const value = dataRef.valueOrElse('');
     const error = errorRef.valueOrElse(null);
     const valid = isValid({
-      schema,
+      schema: innerSchema,
       error,
       value,
       getRootSchema,
+      validator,
     });
 
     const handleChange = (eventData) => {
@@ -189,10 +229,10 @@ class FormField extends React.Component {
       case 'string':
         return (
           <StringInput
-            schema={schema}
+            schema={innerSchema}
             fieldKey={fieldKey}
             path={newPath}
-            error={error}
+            error={error || !valid}
             value={value}
             handleChange={handleChange}
             groupClass={getFieldSize(schema)}
@@ -218,7 +258,7 @@ class FormField extends React.Component {
           <hr key={`hr-${fieldKey}`}/>,
           <Form
             key={`form-${fieldKey}`}
-            schema={schema}
+            schema={innerSchema}
             path={newPath}
             formState={formState}
             formErrors={formErrors}
@@ -226,13 +266,14 @@ class FormField extends React.Component {
             isChildForm={true}
             onChange={handleChange}
             getRootSchema={getRootSchema}
+            validator={ajv}
           />
         ]);
       case 'array':
         return (
           <FormTable
             key={`form-${fieldKey}`}
-            schema={schema}
+            schema={innerSchema}
             fieldKey={fieldKey}
             path={newPath}
             formState={formState}
@@ -261,6 +302,7 @@ FormField.propTypes = {
   onChange: PropTypes.func,
   getRootSchema: PropTypes.func,
   hideLabel: PropTypes.bool,
+  validator: PropTypes.object,
 };
 
 export default FormField;

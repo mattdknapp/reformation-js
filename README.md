@@ -18,6 +18,7 @@ The Form component is the primary interface for `reformation-js`.
 | `formErrors` | Object | false | Form related errors |
 | `onChange` | Function | false | A function triggered when a field's value is changed |
 | `header` | String | false | Text to be displayed in the header above the form |
+| `validator` | AJV Instance | false | Optional instance of modified AJV validator. |
 
 ## onChange
 When data has changed on a field inside of `Form` the `onChanged` method will
@@ -29,6 +30,14 @@ be called with an object with the following format passed in as it's argument:
 | `field` | The key of the field that has changed. |
 | `value` | The new value of the field. |
 | `event` | The original event that triggered the change. |
+
+## A Note On validator
+AJV is an extremely rich library and has the ability to customize it's
+behavior. An example of this would be the ability to add [your own custom
+formats](https://github.com/epoberezkin/ajv#api-addformat). To prevent you
+from having to chose between Reformation and AJV we allow you to bring your
+own copy. If you don't wish to bother though, don't worry. Reformation packs
+it's own vanilla instance of AJV and has you covered!
 
 # JSON Schema interpretation
 
@@ -191,9 +200,7 @@ A more complete example is located after the schema.
       }
     },
     "state": {
-      "type": "string",
-      "title": "State",
-      "enum": { "$ref": "#/definitions/states" },
+      "$ref": "#/definitions/states",
       "formMeta": {
         "size": "xSmall"
       }
@@ -209,61 +216,65 @@ A more complete example is located after the schema.
   },
   "required": ["street", "city", "state", "zipcode"],
   "definitions": {
-    "states": [
-      "Alabama",
-      "Alaska",
-      "Arizona",
-      "Arkansas",
-      "California",
-      "Colorado",
-      "Connecticut",
-      "Delaware",
-      "District Of Columbia",
-      "Florida",
-      "Georgia",
-      "Guam",
-      "Hawaii",
-      "Idaho",
-      "Illinois",
-      "Indiana",
-      "Iowa",
-      "Kansas",
-      "Kentucky",
-      "Louisiana",
-      "Maine",
-      "Maryland",
-      "Massachusetts",
-      "Michigan",
-      "Minnesota",
-      "Mississippi",
-      "Missouri",
-      "Montana",
-      "Nebraska",
-      "Nevada",
-      "New Hampshire",
-      "New Jersey",
-      "New Mexico",
-      "New York",
-      "North Carolina",
-      "North Dakota",
-      "Ohio",
-      "Oklahoma",
-      "Oregon",
-      "Pennsylvania",
-      "Rhode Island",
-      "South Carolina",
-      "South Dakota",
-      "Tennessee",
-      "Texas",
-      "Utah",
-      "Vermont",
-      "Virgin Islands",
-      "Virginia",
-      "Washington",
-      "West Virginia",
-      "Wisconsin",
-      "Wyoming"
-    ]
+    "states": {
+      "type": "string",
+      "title": "State",
+      "enum": [
+        "Alabama",
+        "Alaska",
+        "Arizona",
+        "Arkansas",
+        "California",
+        "Colorado",
+        "Connecticut",
+        "Delaware",
+        "District Of Columbia",
+        "Florida",
+        "Georgia",
+        "Guam",
+        "Hawaii",
+        "Idaho",
+        "Illinois",
+        "Indiana",
+        "Iowa",
+        "Kansas",
+        "Kentucky",
+        "Louisiana",
+        "Maine",
+        "Maryland",
+        "Massachusetts",
+        "Michigan",
+        "Minnesota",
+        "Mississippi",
+        "Missouri",
+        "Montana",
+        "Nebraska",
+        "Nevada",
+        "New Hampshire",
+        "New Jersey",
+        "New Mexico",
+        "New York",
+        "North Carolina",
+        "North Dakota",
+        "Ohio",
+        "Oklahoma",
+        "Oregon",
+        "Pennsylvania",
+        "Rhode Island",
+        "South Carolina",
+        "South Dakota",
+        "Tennessee",
+        "Texas",
+        "Utah",
+        "Vermont",
+        "Virgin Islands",
+        "Virginia",
+        "Washington",
+        "West Virginia",
+        "Wisconsin",
+        "Wyoming"
+      ]
+    }
   }
 }
 ```
