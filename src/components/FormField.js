@@ -106,7 +106,7 @@ class FormField extends React.Component {
 
   componentDidMount() {
     this.setState({
-      innerState: this.getInnerSchema(),
+      innerSchema: this.getInnerSchema(),
     });
   }
 

@@ -31,6 +31,14 @@ be called with an object with the following format passed in as it's argument:
 | `value` | The new value of the field. |
 | `event` | The original event that triggered the change. |
 
+## A Note On validator
+AJV is an extremely rich library and has the ability to customize it's
+behavior. An example of this would be the ability to add [your own custom
+formats](https://github.com/epoberezkin/ajv#api-addformat). To prevent you
+from having to chose between Reformation and AJV we allow you to bring your
+own. If you don't wish to bother though, don't worry. Reformation packs it's
+own AJV and has you covered!
+
 # JSON Schema interpretation
 
 ## JSON Schema Keywords
