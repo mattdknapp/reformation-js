@@ -18,7 +18,7 @@ The Form component is the primary interface for `reformation-js`.
 | `formErrors` | Object | false | Form related errors |
 | `onChange` | Function | false | A function triggered when a field's value is changed |
 | `header` | String | false | Text to be displayed in the header above the form |
-| `validator` | AJV Instance | false | Optional instance of custom complied AJV validator. |
+| `validator` | AJV Instance | false | Optional instance of modified AJV validator. |
 
 ## onChange
 When data has changed on a field inside of `Form` the `onChanged` method will
