@@ -30,31 +30,6 @@ be called with an object with the following format passed in as it's argument:
 | `value` | The new value of the field. |
 | `event` | The original event that triggered the change. |
 
-# reducerFactory
-`reformation-js` includes a helper function exported as `reducerFactory` to
-facilitate quick and easy creation of reducer functions to be used with
-`reformation-js`. This helper function is in no way a dependency of
-`reformation-js` but does provide a convenient way to quickly handle data
-through the usage of gaearon's excelent `redux` library.
-
-## Arguments
-`reducerFactory` expects exactly two areguments when called:
-
-| Arguments | Type | Description |
-| :-- | :-- | :-- |
-| `namespace` | String | The namespace used to scope action types. |
-| `initialState` | Object | Initialization state for the form. |
-
-## Output
-When called `reducerFactory` will return an object with the following
-structure:
-
-| Attribute | Type | Description |
-| :-- | :-- | :-- |
-| `createReducer` | Function | A factory function that will return a new reducer function when called. |
-| `actionTypes` | Object | A collection of namespaced action types used by the outputted reducer of `createReducer`. |
-| `actionCreators` | Object | A collection of actionCreators for use of the outputted reducer of `createReducer`. |
-
 # JSON Schema interpretation
 
 ## JSON Schema Keywords
@@ -360,3 +335,51 @@ class App extends React.Component {
   }
 };
 ```
+
+# reducerFactory
+`reformation-js` includes a helper function exported as `reducerFactory` to
+facilitate quick and easy creation of reducer functions to be used with
+`reformation-js`. This helper function is in no way a dependency of
+`reformation-js` but does provide a convenient way to quickly handle data
+through the usage of gaearon's excelent `redux` library.
+
+## Arguments
+`reducerFactory` expects exactly two areguments when called:
+
+| Arguments | Type | Description |
+| :-- | :-- | :-- |
+| `namespace` | String | The namespace used to scope action types. |
+| `initialState` | Object | Initialization state for the form. |
+
+## Output
+When called `reducerFactory` will return an object with the following
+structure:
+
+| Attribute | Type | Description |
+| :-- | :-- | :-- |
+| `createReducer` | Function | A factory function that will return a new reducer function when called. |
+| `actionTypes` | Object | A collection of namespaced action types used by the outputted reducer of `createReducer`. |
+| `actionCreators` | Object | A collection of actionCreators for use of the outputted reducer of `createReducer`. |
+
+
+# FormFieldFactory
+`reformation-js` includes a helper function to allow it's features to be used
+on fields that exist outside of the normal layout of the form.
+
+## Arguments
+`FormFieldFactory` expects exactly two arguments when called:
+
+| Arguments | Type | Description |
+| :-- | :-- | :-- |
+| `schema` | Object | The JSON Schema used to describe the form. |
+| `handleChange` | Function | A function to be called when a field changes. |
+
+## Output
+When called `FormFieldFactory` will return a React component with the
+that expects the following props:
+
+| Prop | Type | Description |
+| :-- | :-- | :-- |
+| `path` | String | The path of the field in the JSON Schema object. |
+| `formState` | Object | The current state of the form. |
+| `formErrors` | Object | The current errors in the form. |
