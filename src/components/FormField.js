@@ -95,8 +95,19 @@ class FormField extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      innerSchema: null,
+    };
+
     this.getRefs = this.getRefs.bind(this);
     this.newPath = this.newPath.bind(this);
+    this.getInnerSchema = this.getInnerSchema.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      innerState: this.getInnerSchema(),
+    });
   }
 
   shouldComponentUpdate(nextProps) {
@@ -141,6 +152,28 @@ class FormField extends React.Component {
     };
   }
 
+  getInnerSchema() {
+    const {
+      schema,
+      getRootSchema,
+    } = this.props;
+
+    const {
+      innerSchema,
+    } = this.state;
+
+    if(innerSchema) {
+      return innerSchema;
+    }
+
+    if(schema.$ref) {
+      const ref = Reference({ path: schema.$ref, schema: getRootSchema() });
+      return ref.value();
+    }
+
+    return schema;
+  }
+
   render() {
     const {
       schema,
@@ -153,11 +186,13 @@ class FormField extends React.Component {
       validator,
     } = this.props;
 
+    const innerSchema = this.getInnerSchema();
+
     const {
       type,
       title,
       description,
-    } = schema;
+    } = innerSchema;
 
     const {
       dataRef,
@@ -168,7 +203,7 @@ class FormField extends React.Component {
     const value = dataRef.valueOrElse('');
     const error = errorRef.valueOrElse(null);
     const valid = isValid({
-      schema,
+      schema: innerSchema,
       error,
       value,
       getRootSchema,
@@ -194,7 +229,7 @@ class FormField extends React.Component {
       case 'string':
         return (
           <StringInput
-            schema={schema}
+            schema={innerSchema}
             fieldKey={fieldKey}
             path={newPath}
             error={error || !valid}
@@ -223,7 +258,7 @@ class FormField extends React.Component {
           <hr key={`hr-${fieldKey}`}/>,
           <Form
             key={`form-${fieldKey}`}
-            schema={schema}
+            schema={innerSchema}
             path={newPath}
             formState={formState}
             formErrors={formErrors}
@@ -238,7 +273,7 @@ class FormField extends React.Component {
         return (
           <FormTable
             key={`form-${fieldKey}`}
-            schema={schema}
+            schema={innerSchema}
             fieldKey={fieldKey}
             path={newPath}
             formState={formState}
