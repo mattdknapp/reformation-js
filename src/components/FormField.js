@@ -184,6 +184,7 @@ class FormField extends React.Component {
       formErrors,
       hideLabel,
       validator,
+      required,
     } = this.props;
 
     const innerSchema = this.getInnerSchema();
@@ -238,6 +239,7 @@ class FormField extends React.Component {
             groupClass={getFieldSize(schema)}
             getRootSchema={getRootSchema}
             hideLabel={hideLabel}
+            required={required}
           />
         );
       case 'boolean':
@@ -251,6 +253,7 @@ class FormField extends React.Component {
             handleChange={handleChange}
             groupClass={getFieldSize(schema)}
             hideLabel={hideLabel}
+            required={required}
           />
         );
       case 'object':
@@ -303,6 +306,7 @@ FormField.propTypes = {
   getRootSchema: PropTypes.func,
   hideLabel: PropTypes.bool,
   validator: PropTypes.object,
+  required: PropTypes.array,
 };
 
 export default FormField;

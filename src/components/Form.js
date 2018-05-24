@@ -78,6 +78,7 @@ class Form extends React.Component {
             onChange={handleChange}
             getRootSchema={this.getRootSchema}
             validator={validator}
+            required={schema.required}
           />
         )
       })

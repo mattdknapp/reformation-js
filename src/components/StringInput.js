@@ -21,6 +21,7 @@ const childPropsMap = {
   'schema': 'schema',
   'error': 'error',
   'hideLabel': 'hideLabel',
+  'required': 'required',
 };
 
 const childPropsKeys = Object.keys(childPropsMap);
@@ -54,7 +55,8 @@ const getEnums = (schema, getRootSchema) => {
 const getFieldProps = (props) => {
   const {
     schema,
-    getRootSchema
+    getRootSchema,
+    required,
   } = props;
 
   const enums = getEnums(schema, getRootSchema);
