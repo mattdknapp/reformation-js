@@ -23,6 +23,7 @@ const Select = (props) => {
     value,
     hideLabel,
     fieldId,
+    required,
   } = props;
 
   const groupClasses = `form-group ${String(groupClass || '')}`.trim();

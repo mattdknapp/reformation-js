@@ -7,6 +7,57 @@ import {
 } from '../lib/utilities';
 
 class TextField extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      touched: false,
+    };
+
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.shouldDisplayValidation = this.shouldDisplayValidation.bind(this);
+  }
+
+  handleFocus(e) {
+    this.setState({
+      touched: false,
+    });
+  }
+
+  handleBlur(e) {
+    const {
+      handleBlur: onBlur,
+    } = this.props;
+
+    this.setState({
+      touched: true,
+    });
+
+    safeFunc(onBlur)(e);
+  }
+
+  shouldDisplayValidation() {
+    const {
+      value,
+      fieldKey,
+      required = [],
+      error,
+      wasValidated,
+    } = this.props;
+
+    const {
+      touched,
+    } = this.state;
+
+    const isMissing = required.includes(fieldKey) && !value;
+    const isInError = (isMissing || error);
+    const touchedOrValidated = (touched || wasValidated)
+    const shouldDisplay = isInError && touchedOrValidated;
+
+    return shouldDisplay;
+  }
+
   render() {
     const {
       label,
@@ -20,21 +71,16 @@ class TextField extends Component {
       schema,
       error,
       hideLabel,
-      required = [],
-      fieldKey,
     } = this.props;
 
-    const invalidClass = error ? 'is-invalid' : '';
     const errorMessage = getErrorMessage(error);
-    const isMissing = required.includes(fieldKey) && !value;
+    const shouldDisplayValidation = this.shouldDisplayValidation(errorMessage);
+    const invalidClass = shouldDisplayValidation  ? 'is-invalid' : '';
     const fieldClasses = `form-control ${invalidClass} ${safeString(fieldClass)}`.trim();
     const groupClasses = `form-group ${safeString(groupClass)}`.trim();
     const handleChange = safeFunc(onChange);
-    const onBlur = safeFunc(handleBlur);
-    const errorOrMissing = isMissing ? '*Required' : errorMessage;
+    const errorOrMissing = shouldDisplayValidation ? (errorMessage || '*Required') : '';
 
-    console.log(isMissing, fieldKey);
-    console.log(errorOrMissing);
     return (
       <div className={groupClasses}>
         <FieldLabel
@@ -49,7 +95,8 @@ class TextField extends Component {
           value={value}
           placeholder={safeString(placeholder)}
           onChange={handleChange}
-          onBlur={onBlur}/>
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}/>
         <div className="invalid-feedback">
           {errorOrMissing}
         </div>

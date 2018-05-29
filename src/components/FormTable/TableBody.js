@@ -45,9 +45,13 @@ class TableRow extends React.Component{
       fieldKey,
       path,
       schema,
+      schema: {
+        items
+      },
     } = this.props;
 
     const keys = getKeysFromSchema(schema);
+
 
     return (
       <tr>
@@ -60,11 +64,12 @@ class TableRow extends React.Component{
             >
               <FormField
                 { ...this.props }
-                schema={schema.items.properties[key]}
+                schema={items.properties[key]}
                 fieldKey={key}
                 value={val}
                 path={`${path}`}
                 hideLabel={true}
+                required={items.required}
               />
             </td>
           );
