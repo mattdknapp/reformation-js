@@ -43,7 +43,7 @@ const extractKeyAndRoot = (path) => {
 const FormFieldFactory = ({
   schema,
   handleChange,
-  ajv,
+  validator,
 }) => {
   const FormFieldWithContext = (props) => {
     const {
@@ -77,7 +77,7 @@ const FormFieldFactory = ({
         onChange={handleChange}
         getRootSchema={getRootSchema}
         required={required}
-        validator={ajv}
+        validator={validator}
       />
     );
   };
