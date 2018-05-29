@@ -1,9 +1,11 @@
 import React from 'react';
+
 import FormField from './FormField';
 import Reference from '../lib/Reference';
 
 const filteredItems = [
   'properties',
+  'items',
 ];
 
 const checkIfNumber = (item) => {
@@ -17,22 +19,12 @@ const filterNumber = (item) => {
 };
 
 const filterIntermediaries = (item) => {
-  const isNumber = checkIfNumber(item);
-
-  if(isNumber) {
-    return false;
-  }
-
   return !filteredItems.includes(item);
 };
 
 const getCurrentSchemaPath = (path) => {
   const splitPath = path.split('/').filter(filterNumber);
   return splitPath.join('/');
-};
-
-const getRequiredPath = (currentSchemaPath) => {
-  return currentSchemaPath.split('/').reverse().slice(2).reverse().join('/') + '/required';
 };
 
 const extractKeyAndRoot = (path) => {
@@ -51,6 +43,7 @@ const extractKeyAndRoot = (path) => {
 const FormFieldFactory = ({
   schema,
   handleChange,
+  ajv,
 }) => {
   const FormFieldWithContext = (props) => {
     const {
@@ -74,9 +67,6 @@ const FormFieldFactory = ({
     });
 
     const required = isRequired ? [key] : [];
-
-    console.log(pathRoot);
-    console.log(key);
     return (
       <FormField
         schema={currentSchema.value()}
@@ -87,6 +77,7 @@ const FormFieldFactory = ({
         onChange={handleChange}
         getRootSchema={getRootSchema}
         required={required}
+        validator={ajv}
       />
     );
   };
