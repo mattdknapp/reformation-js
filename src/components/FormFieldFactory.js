@@ -43,6 +43,9 @@ const FormFieldFactory = ({
     const getRootSchema = () => schema;
 
     const currentSchema = Reference({ path, schema });
+    const requiredPath = `${pathRoot}/required`;;
+    const requiredReference = Reference({ path: requiredPath, schema });
+    const required = requiredReference.valueOrElse([])
 
     return (
       <FormField
@@ -53,6 +56,7 @@ const FormFieldFactory = ({
         fieldKey={key}
         onChange={handleChange}
         getRootSchema={getRootSchema}
+        required={required}
       />
     );
   };
