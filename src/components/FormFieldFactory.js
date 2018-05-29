@@ -42,7 +42,7 @@ const FormFieldFactory = ({
 
     const getRootSchema = () => schema;
 
-    const currentSchema = Reference({ path: '#/properties/city', schema });
+    const currentSchema = Reference({ path, schema });
 
     return (
       <FormField
