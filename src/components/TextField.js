@@ -73,13 +73,13 @@ class TextField extends Component {
       hideLabel,
     } = this.props;
 
-    const errorMessage = getErrorMessage(error);
-    const shouldDisplayValidation = this.shouldDisplayValidation(errorMessage);
+    const shouldDisplayValidation = this.shouldDisplayValidation();
     const invalidClass = shouldDisplayValidation  ? 'is-invalid' : '';
     const fieldClasses = `form-control ${invalidClass} ${safeString(fieldClass)}`.trim();
     const groupClasses = `form-group ${safeString(groupClass)}`.trim();
     const handleChange = safeFunc(onChange);
-    const errorOrMissing = shouldDisplayValidation ? (errorMessage || '*Required') : '';
+    const errorMessage = getErrorMessage(error);
+    const errorOrMissing = shouldDisplayValidation ? '*Required' : errorMessage;
 
     return (
       <div className={groupClasses}>

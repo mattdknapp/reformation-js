@@ -4,7 +4,6 @@ import Reference from '../lib/Reference';
 
 const filteredItems = [
   'properties',
-  'items',
 ];
 
 const filterIntermediaries = (item) => {

@@ -52,7 +52,6 @@ class TableRow extends React.Component{
 
     const keys = getKeysFromSchema(schema);
 
-
     return (
       <tr>
         {keys.map((key, i) => {
