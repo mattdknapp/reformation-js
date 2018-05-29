@@ -6,8 +6,33 @@ const filteredItems = [
   'properties',
 ];
 
+const checkIfNumber = (item) => {
+  const isNumber = !isNaN(Number(item));
+
+  return isNumber;
+};
+
+const filterNumber = (item) => {
+  return !checkIfNumber(item);
+};
+
 const filterIntermediaries = (item) => {
+  const isNumber = checkIfNumber(item);
+
+  if(isNumber) {
+    return false;
+  }
+
   return !filteredItems.includes(item);
+};
+
+const getCurrentSchemaPath = (path) => {
+  const splitPath = path.split('/').filter(filterNumber);
+  return splitPath.join('/');
+};
+
+const getRequiredPath = (currentSchemaPath) => {
+  return currentSchemaPath.split('/').reverse().slice(2).reverse().join('/') + '/required';
 };
 
 const extractKeyAndRoot = (path) => {
@@ -15,7 +40,7 @@ const extractKeyAndRoot = (path) => {
   const pathLength = splitPath.length;
   const keyIndex = pathLength - 1;
   const key = splitPath[keyIndex];
-  const pathRoot = splitPath.slice(0, keyIndex);
+  const pathRoot = splitPath.slice(0, keyIndex).join('/');
 
   return {
     key,
@@ -32,6 +57,7 @@ const FormFieldFactory = ({
       path,
       formState,
       formErrors,
+      isRequired,
     } = props;
 
     const {
@@ -41,11 +67,16 @@ const FormFieldFactory = ({
 
     const getRootSchema = () => schema;
 
-    const currentSchema = Reference({ path, schema });
-    const requiredPath = `${pathRoot}/required`;;
-    const requiredReference = Reference({ path: requiredPath, schema });
-    const required = requiredReference.valueOrElse([])
+    const currentSchemaPath = getCurrentSchemaPath(path);
+    const currentSchema = Reference({
+      path: currentSchemaPath,
+      schema,
+    });
 
+    const required = isRequired ? [key] : [];
+
+    console.log(pathRoot);
+    console.log(key);
     return (
       <FormField
         schema={currentSchema.value()}

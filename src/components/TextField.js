@@ -79,7 +79,7 @@ class TextField extends Component {
     const groupClasses = `form-group ${safeString(groupClass)}`.trim();
     const handleChange = safeFunc(onChange);
     const errorMessage = getErrorMessage(error);
-    const errorOrMissing = shouldDisplayValidation ? '*Required' : errorMessage;
+    const errorOrMissing = errorMessage || '*Required';
 
     return (
       <div className={groupClasses}>
