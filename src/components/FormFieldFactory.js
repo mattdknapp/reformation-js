@@ -2,6 +2,7 @@ import React from 'react';
 
 import FormField from './FormField';
 import Reference from '../lib/Reference';
+import translateReferences from '../lib/TranslateReferences';
 
 const filteredItems = [
   'properties',
@@ -45,6 +46,11 @@ const FormFieldFactory = ({
   handleChange,
   validator,
 }) => {
+  const safeSchema = translateReferences({
+    schema,
+    originalSchema: schema,
+  });
+
   const FormFieldWithContext = (props) => {
     const {
       path,
@@ -58,12 +64,12 @@ const FormFieldFactory = ({
       pathRoot,
     } = extractKeyAndRoot(path);
 
-    const getRootSchema = () => schema;
+    const getRootSchema = () => safeSchema;
 
     const currentSchemaPath = getCurrentSchemaPath(path);
     const currentSchema = Reference({
       path: currentSchemaPath,
-      schema,
+      schema: safeSchema,
     });
 
     const required = isRequired ? [key] : [];
