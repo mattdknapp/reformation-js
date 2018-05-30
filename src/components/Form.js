@@ -58,6 +58,7 @@ class Form extends React.Component {
       formState,
       formErrors,
       validator,
+      wasValidated,
     } = this.props;
 
     const key = schema.type === 'array' ? 'items' : 'properties';
@@ -78,6 +79,8 @@ class Form extends React.Component {
             onChange={handleChange}
             getRootSchema={this.getRootSchema}
             validator={validator}
+            wasValidated={wasValidated}
+            required={schema.required}
           />
         )
       })
@@ -88,7 +91,8 @@ class Form extends React.Component {
     const {
       header,
       schema,
-      isChildForm
+      isChildForm,
+      wasValidated,
     } = this.props;
 
     if(isChildForm) {
@@ -97,13 +101,15 @@ class Form extends React.Component {
       );
     }
 
+    const formClass = wasValidated ? 'was-validated' : '';
+
     return (
       <div className="card">
         <div className="card-body">
           <div className="card-header">
             {header}
           </div>
-          <form className="test-form">
+          <form className={formClass} noValidate>
             <div className="row">
               {this.renderFields()}
             </div>
@@ -124,6 +130,7 @@ Form.propTypes = {
   header: PropTypes.string,
   path: PropTypes.string,
   validator: PropTypes.object,
+  wasValidated: PropTypes.bool,
 };
 
 export default Form;

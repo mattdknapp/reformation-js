@@ -184,6 +184,8 @@ class FormField extends React.Component {
       formErrors,
       hideLabel,
       validator,
+      wasValidated,
+      required,
     } = this.props;
 
     const innerSchema = this.getInnerSchema();
@@ -238,6 +240,8 @@ class FormField extends React.Component {
             groupClass={getFieldSize(schema)}
             getRootSchema={getRootSchema}
             hideLabel={hideLabel}
+            required={required}
+            wasValidated={wasValidated}
           />
         );
       case 'boolean':
@@ -251,6 +255,8 @@ class FormField extends React.Component {
             handleChange={handleChange}
             groupClass={getFieldSize(schema)}
             hideLabel={hideLabel}
+            required={required}
+            wasValidated={wasValidated}
           />
         );
       case 'object':
@@ -267,6 +273,7 @@ class FormField extends React.Component {
             onChange={handleChange}
             getRootSchema={getRootSchema}
             validator={ajv}
+            wasValidated={wasValidated}
           />
         ]);
       case 'array':
@@ -282,6 +289,7 @@ class FormField extends React.Component {
             isChildForm={true}
             onChange={onChange}
             getRootSchema={getRootSchema}
+            wasValidated={wasValidated}
           />
         );
       default:
@@ -303,6 +311,8 @@ FormField.propTypes = {
   getRootSchema: PropTypes.func,
   hideLabel: PropTypes.bool,
   validator: PropTypes.object,
+  wasValidated: PropTypes.bool,
+  required: PropTypes.array,
 };
 
 export default FormField;

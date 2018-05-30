@@ -13,5 +13,5 @@ export const getErrorMessage = (error) => {
     return error;
   }
 
-  return 'Invalid';
+  return error ? 'Invalid' : '';
 };
