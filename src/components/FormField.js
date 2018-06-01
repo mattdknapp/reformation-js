@@ -227,6 +227,8 @@ class FormField extends React.Component {
       });
     };
 
+    const ajv = validator || rawAjv;
+
     switch(type) {
       case 'string':
         return (
