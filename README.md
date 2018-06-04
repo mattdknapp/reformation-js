@@ -383,7 +383,6 @@ on fields that exist outside of the normal layout of the form.
 | Arguments | Type | Description |
 | :-- | :-- | :-- |
 | `schema` | Object | The JSON Schema used to describe the form. |
-| `handleChange` | Function | A function to be called when a field changes. |
 | `validator` | AJV Instance | Optional custom AJV Instance. |
 
 ## Output
@@ -395,4 +394,5 @@ that expects the following props:
 | `path` | String | The path of the field in the JSON Schema object. |
 | `formState` | Object | The current state of the form. |
 | `formErrors` | Object | The current errors in the form. |
+| `handleChange` | Function | A function to be called when a field changes. |
 | `isRequired` | Boolean | Boolean indicating if the field is required. |

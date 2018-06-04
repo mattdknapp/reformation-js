@@ -43,7 +43,6 @@ const extractKeyAndRoot = (path) => {
 
 const FormFieldFactory = ({
   schema,
-  handleChange,
   validator,
 }) => {
   const safeSchema = translateReferences({
@@ -57,6 +56,7 @@ const FormFieldFactory = ({
       formState,
       formErrors,
       isRequired,
+      handleChange,
     } = props;
 
     const {
