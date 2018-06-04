@@ -378,7 +378,7 @@ structure:
 on fields that exist outside of the normal layout of the form.
 
 ## Arguments
-`FormFieldFactory` expects exactly two arguments when called:
+`FormFieldFactory` expects the following arguments when called:
 
 | Arguments | Type | Description |
 | :-- | :-- | :-- |
