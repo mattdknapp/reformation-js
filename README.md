@@ -386,8 +386,8 @@ on fields that exist outside of the normal layout of the form.
 | `validator` | AJV Instance | Optional custom AJV Instance. |
 
 ## Output
-When called `FormFieldFactory` will return a React component with the
-that expects the following props:
+When called `FormFieldFactory` will return a React component that expects the
+following props:
 
 | Prop | Type | Description |
 | :-- | :-- | :-- |
