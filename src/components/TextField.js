@@ -71,12 +71,13 @@ class TextField extends Component {
       schema,
       error,
       hideLabel,
+      renderedSeperately,
     } = this.props;
 
     const shouldDisplayValidation = this.shouldDisplayValidation();
     const invalidClass = shouldDisplayValidation  ? 'is-invalid' : '';
     const fieldClasses = `form-control ${invalidClass} ${safeString(fieldClass)}`.trim();
-    const groupClasses = `form-group ${safeString(groupClass)}`.trim();
+    const groupClasses = renderedSeperately ? 'form-group' : `form-group ${safeString(groupClass)}`.trim();
     const handleChange = safeFunc(onChange);
     const errorMessage = getErrorMessage(error);
     const errorOrMissing = errorMessage || '*Required';

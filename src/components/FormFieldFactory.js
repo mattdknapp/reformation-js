@@ -9,36 +9,33 @@ const filteredItems = [
   'items',
 ];
 
-const checkIfNumber = (item) => {
-  const isNumber = !isNaN(Number(item));
-
-  return isNumber;
-};
-
-const filterNumber = (item) => {
-  return !checkIfNumber(item);
-};
-
 const filterIntermediaries = (item) => {
   return !filteredItems.includes(item);
 };
 
-const getCurrentSchemaPath = (path) => {
-  const splitPath = path.split('/').filter(filterNumber);
-  return splitPath.join('/');
+const addScaffolding = (pre, next, i) => {
+  if(i === 0) {
+    return next;
+  }
+
+  if(isNaN(next)) {
+    return `${pre}/properties/${next}`;
+  }
+
+  return `${pre}/items`;
 };
 
-const extractKeyAndRoot = (path) => {
-  const splitPath = path.split('/').filter(filterIntermediaries);
+const createFullPath = (path) => {
+  const splitPath = path.split('/');
   const pathLength = splitPath.length;
   const keyIndex = pathLength - 1;
   const key = splitPath[keyIndex];
-  const pathRoot = splitPath.slice(0, keyIndex).join('/');
+  const fullPath = splitPath.reduce(addScaffolding, '');
 
   return {
     key,
-    pathRoot,
-  }
+    fullPath,
+  };
 };
 
 const FormFieldFactory = ({
@@ -57,26 +54,27 @@ const FormFieldFactory = ({
       formErrors,
       isRequired,
       handleChange,
+      hideLabel,
     } = props;
 
     const {
       key,
-      pathRoot,
-    } = extractKeyAndRoot(path);
+      fullPath,
+    } = createFullPath(path);
 
     const getRootSchema = () => safeSchema;
 
-    const currentSchemaPath = getCurrentSchemaPath(path);
     const currentSchema = Reference({
-      path: currentSchemaPath,
+      path: fullPath,
       schema: safeSchema,
     });
 
     const required = isRequired ? [key] : [];
+    const trimmedPath = path.replace(/\/[a-zA-Z0-9]*$/, '');
     return (
       <FormField
         schema={currentSchema.value()}
-        path={pathRoot}
+        path={trimmedPath}
         formState={formState}
         formErrors={formErrors}
         fieldKey={key}
@@ -84,6 +82,8 @@ const FormFieldFactory = ({
         getRootSchema={getRootSchema}
         required={required}
         validator={validator}
+        hideLabel={hideLabel}
+        renderedSeperately={true}
       />
     );
   };

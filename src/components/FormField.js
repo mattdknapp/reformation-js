@@ -186,6 +186,7 @@ class FormField extends React.Component {
       validator,
       wasValidated,
       required,
+      renderedSeperately,
     } = this.props;
 
     const innerSchema = this.getInnerSchema();
@@ -244,6 +245,7 @@ class FormField extends React.Component {
             hideLabel={hideLabel}
             required={required}
             wasValidated={wasValidated}
+            renderedSeperately={renderedSeperately}
           />
         );
       case 'boolean':
@@ -315,6 +317,7 @@ FormField.propTypes = {
   validator: PropTypes.object,
   wasValidated: PropTypes.bool,
   required: PropTypes.array,
+  renderedSeperately: PropTypes.bool,
 };
 
 export default FormField;
