@@ -23,6 +23,7 @@ const childPropsMap = {
   'hideLabel': 'hideLabel',
   'required': 'required',
   'wasValidated': 'wasValidated',
+  'renderedSeperately': 'renderedSeperately',
 };
 
 const childPropsKeys = Object.keys(childPropsMap);

@@ -10,9 +10,7 @@ const FieldLabel = (props) => {
   } = props;
 
   if(hideLabel) {
-    return (
-      <label htmlFor={safeString(fieldId)}/>
-    );
+    return null;
   }
 
   return (
