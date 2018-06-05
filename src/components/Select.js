@@ -5,11 +5,12 @@ import { getErrorMessage } from '../lib/utilities';
 
 const Option = (props) => {
   const {
-    value
+    value,
   } = props;
 
+  const safeValue = value || '-- SELECT --';
   return (
-    <option>{value}</option>
+    <option>{safeValue}</option>
   )
 };
 
