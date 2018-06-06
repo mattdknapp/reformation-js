@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import FieldLabel from './FieldLabel';
+import React, { Component, Fragment } from 'react';
+
 import ValidatedField from './ValidatedField';
+import FieldLabel from './FieldLabel';
 import {
   safeString,
   safeFunc,
@@ -9,25 +10,28 @@ import {
 class TextField extends Component {
   render() {
     const {
-      label,
       fieldId,
+      label,
+      hideLabel,
       placeholder,
       fieldClass,
-      groupClass,
       onChange,
-      handleBlur,
       value,
-      schema,
-      error,
-      hideLabel,
-      renderedSeperately,
+      invalidClass,
+      handleFocus,
+      handleBlur,
     } = this.props;
 
     const fieldClasses = `form-control ${invalidClass} ${safeString(fieldClass)}`.trim();
     const handleChange = safeFunc(onChange);
 
     return (
-      <ValidatedField {...this.props}>
+      <Fragment>
+        <FieldLabel
+          fieldId={fieldId}
+          label={label}
+          hideLabel={hideLabel}
+        />
         <input
           type="text"
           className={fieldClasses}
@@ -35,12 +39,20 @@ class TextField extends Component {
           value={value}
           placeholder={safeString(placeholder)}
           onChange={handleChange}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
-      </ValidatedField>
+      </Fragment>
     )
   }
-}
+};
 
-export default TextField;
+const ValidatedTextField = (props) => {
+  return (
+    <ValidatedField {...props}>
+      <TextField {...props}/>
+    </ValidatedField>
+  );
+};
+
+export default ValidatedTextField;

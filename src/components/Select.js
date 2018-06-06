@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+
+import ValidatedField from './ValidatedField';
 import FieldLabel from './FieldLabel';
 import { getErrorMessage } from '../lib/utilities';
 
@@ -8,9 +10,9 @@ const Option = (props) => {
     value,
   } = props;
 
-  const safeValue = value || '-- SELECT --';
+  const safeTitle = value || '-- SELECT --';
   return (
-    <option>{safeValue}</option>
+    <option value={value}>{safeTitle}</option>
   )
 };
 
@@ -18,40 +20,48 @@ const Select = (props) => {
   const {
     enums,
     label,
-    groupClass,
     onChange,
     error,
     value,
     hideLabel,
     fieldId,
-    required,
+    invalidClass,
+    handleFocus,
+    handleBlur,
   } = props;
 
-  const groupClasses = `form-group ${String(groupClass || '')}`.trim();
-  const errorMessage = getErrorMessage(error);
+  const fieldClass = `form-control form-control-sm ${invalidClass}`;
 
   return (
-    <div className={groupClasses}>
+    <Fragment>
       <FieldLabel
         fieldId={fieldId}
         label={label}
         hideLabel={hideLabel}
       />
       <select
-        className="form-control form-control-sm"
+        className={fieldClass}
         value={value}
-        onChange={onChange}>
+        onChange={onChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      >
         {enums.map((value, i) => {
           return (
             <Option value={value} key={i}/>
           )
         })}
       </select>
-      <div className="invalid-feedback">
-        {errorMessage}
-      </div>
-    </div>
+    </Fragment>
   )
+};
+
+const ValidatedSelect = (props) => {
+  return (
+    <ValidatedField {...props}>
+      <Select {...props}/>
+    </ValidatedField>
+  );
 };
 
 Select.propTypes = {
@@ -64,4 +74,4 @@ Select.propTypes = {
   groupClass: PropTypes.string
 };
 
-export default Select;
+export default ValidatedSelect;

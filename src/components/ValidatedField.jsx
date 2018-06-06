@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
-import { getErrorMessage } from '../lib/utilities';
+import {
+  getErrorMessage,
+  safeFunc,
+  safeString,
+} from '../lib/utilities';
 
 class ValidatedField extends Component {
   constructor(props) {
@@ -56,30 +60,41 @@ class ValidatedField extends Component {
 
   render() {
     const {
-      label,
       fieldId,
-      placeholder,
-      fieldClass,
       groupClass,
       onChange,
-      handleBlur,
       value,
       schema,
       error,
-      hideLabel,
       renderedSeperately,
-      children,
     } = this.props;
+
+    const {
+      children,
+      ...childProps,
+    } = this.props;
+
+    const {
+      handleFocus,
+      handleBlur,
+    } = this;
 
     const shouldDisplayValidation = this.shouldDisplayValidation();
     const invalidClass = shouldDisplayValidation  ? 'is-invalid' : '';
     const groupClasses = renderedSeperately ? 'form-group' : `form-group ${safeString(groupClass)}`.trim();
     const errorMessage = getErrorMessage(error);
-    const errorOrMissing = errorMessage || '*Required';
+    const errorOrMissing = (value && errorMessage) || '*Required';
 
     return (
       <div className={groupClasses}>
-        {children}
+        {React.cloneElement(
+          children,
+          {
+            invalidClass,
+            handleFocus,
+            handleBlur,
+            ...childProps
+          })}
         <div className="invalid-feedback">
           {errorOrMissing}
         </div>
