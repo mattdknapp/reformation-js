@@ -115,6 +115,7 @@ class FormField extends React.Component {
       dataRef,
       errorRef,
       wasValidated,
+      path,
     } = this.getRefs();
 
     const {
@@ -125,8 +126,9 @@ class FormField extends React.Component {
     const dataHasChanged = dataRef.valueOrElse('') !== nextDataRef.valueOrElse('');
     const errorHasChanged = errorRef.valueOrElse('') !== nextErrorRef.valueOrElse('');
     const validationRun = wasValidated !== nextProps.wasValidated;
+    const pathChanged = path !== nextProps.path;
 
-    return (dataHasChanged || errorHasChanged || validationRun);
+    return (dataHasChanged || errorHasChanged || validationRun || pathChanged);
   }
 
   newPath() {
