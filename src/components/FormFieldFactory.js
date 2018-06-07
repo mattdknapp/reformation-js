@@ -56,6 +56,7 @@ const FormFieldFactory = ({
       handleChange,
       hideLabel,
       wasValidated,
+      label,
     } = props;
 
     const {
@@ -84,6 +85,7 @@ const FormFieldFactory = ({
         required={required}
         validator={validator}
         hideLabel={hideLabel}
+        label={label}
         wasValidated={wasValidated}
         renderedSeperately={true}
       />

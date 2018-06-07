@@ -187,6 +187,7 @@ class FormField extends React.Component {
       formState,
       formErrors,
       hideLabel,
+      label,
       validator,
       wasValidated,
       required,
@@ -247,6 +248,7 @@ class FormField extends React.Component {
             groupClass={getFieldSize(schema)}
             getRootSchema={getRootSchema}
             hideLabel={hideLabel}
+            label={label}
             required={required}
             wasValidated={wasValidated}
             renderedSeperately={renderedSeperately}
