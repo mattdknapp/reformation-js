@@ -6,6 +6,7 @@ const FieldLabel = (props) => {
   const {
     fieldId,
     label,
+    explicitLabel,
     hideLabel,
   } = props;
 
@@ -13,9 +14,11 @@ const FieldLabel = (props) => {
     return null;
   }
 
+  const content = explicitLabel || safeString(label);
+
   return (
     <label htmlFor={safeString(fieldId)}>
-      <CuratedLabel content={safeString(label)}/>
+      <CuratedLabel content={content}/>
     </label>
   );
 };

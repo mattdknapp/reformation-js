@@ -2,17 +2,20 @@ import React from 'react';
 import RadioButtons from './RadioButtons';
 import Select from './Select';
 import TextField from './TextField';
+import TextArea from './TextArea';
 import Reference from '../lib/Reference';
 
 const inputMap = {
   radioButtons: RadioButtons,
   textField: TextField,
-  select: Select
+  textarea: TextArea,
+  select: Select,
 };
 
 // from -> to
 const childPropsMap = {
   'title': 'label',
+  'label': 'explicitLabel',
   'fieldKey': 'fieldKey',
   'groupClass': 'groupClass',
   'handleChange': 'onChange',
