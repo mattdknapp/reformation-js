@@ -1,5 +1,5 @@
 const replaceAtIndex = ({
-  array,
+  array = [],
   index,
   value,
 }) => {
@@ -28,7 +28,7 @@ const mergeAndSet = ({state, field, value}) => {
 
   if(!isNaN(numberKey) && typeof numberKey === 'number') {
     const newValue = mergeAndSet({
-      state: state[numberKey],
+      state: state && state[numberKey],
       field: newFieldArray,
       value
     });
