@@ -18,16 +18,32 @@ const props = {
 
 describe('<Form />', () => {
   beforeEach(function() {
-    this.form = shallow(<Form {...props} />);
-    // console.log(this.form.html())
+    this.shallowForm = shallow(<Form {...props} />);
   });
 
   it('should render a <Form /> component', function() {
-    expect(this.form).to.have.length(1);
+    expect(this.shallowForm).to.have.length(1);
   });
 
   it('should render a header', function() {
-    expect(this.form.find('.card-header').text()).to.eq(header)
+    expect(this.shallowForm.find('.card-header').text()).to.eq(header)
   });
+
+  describe('Full Name', function() {
+    beforeEach(function() {
+      this.fullForm = render(<Form {...props} />);
+    });
+
+    it('should render a label', function() {
+      expect(this.fullForm.find('label[for="x_full_name"]').text()).to
+        .eq('Full Name');
+    });
+
+    it('should render a text field with a placeholder', function() {
+      expect(this.fullForm.find('input#x_full_name').prop('placeholder')).to
+        .eq('Enter your full name');
+    });
+  });
+
 });
 
