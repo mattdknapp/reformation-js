@@ -32,12 +32,12 @@ const getFieldSize = (entry) => {
 };
 
 const getFieldId = (entry) => {
-  if(!entry.formMeta || !entry.formMeta.id) {
+  if(!entry.formMeta || !entry.formMeta.htmlId) {
     // autogenerate id / for in the future
     return;
   }
 
-  return entry.formMeta.id;
+  return entry.formMeta.htmlId;
 }
 
 const eventKeys = [

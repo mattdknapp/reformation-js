@@ -8,7 +8,7 @@
       "description": "Enter your full name",
       "formMeta": {
         "size": "small",
-        "id": "x_full_name"
+        "htmlId": "x_full_name"
       }
     },
     "age": {
