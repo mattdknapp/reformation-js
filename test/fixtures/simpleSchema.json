@@ -1,0 +1,23 @@
+{
+  "title": "Simple Schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Full Name",
+      "description": "Enter your full name",
+      "formMeta": {
+        "size": "small"
+      }
+    },
+    "age": {
+      "type": "integer",
+      "title": "Age",
+      "description": "Your age in years",
+      "formMeta": {
+        "size": "small"
+      }
+    }
+  }
+}
+
