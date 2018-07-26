@@ -18,8 +18,8 @@ const Maybe = () => ({
   refWrapper (value){
     return Reference(value);
   },
-  nothing() {
-    return Nothing();
+  nothing(message, nullable) {
+    return Nothing(message, nullable);
   },
   of(value) {
     return this.fromNullable(value);
@@ -30,13 +30,13 @@ const Maybe = () => ({
   isReference() {
     return false;
   },
-  fromNullable(nullable) {
+  fromNullable(message, nullable) {
     if(!nullable || !nullable.path || !nullable.schema) {
-      return (this.nothing('Invalid instantiator', nullable));
+      return (this.nothing(message, nullable));
     }
 
     const refExists = !!getValue(nullable);
-    return refExists? this.refWrapper(nullable) : this.nothing('Object not a valid ref', nullable)
+    return refExists? this.refWrapper(nullable) : this.nothing('Object is not a valid ref', nullable)
   }
 });
 
@@ -44,7 +44,8 @@ const Nothing = (message, instantiator) => ({
   ...Maybe(),
   value() {
     if(instantiator) {
-      console.error(instantiator);
+      console.error(instantiator.path);
+      console.error(instantiator.schema);
     }
 
     const errorMessage = message || 'No value provided';
@@ -87,7 +88,7 @@ const Reference = ({
 });
 
 const RefWrapper = (val) => {
-  return Maybe().fromNullable(val);
+  return Maybe().fromNullable(null, val);
 };
 
 export default RefWrapper;
