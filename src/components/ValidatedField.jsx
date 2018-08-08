@@ -50,8 +50,12 @@ class ValidatedField extends Component {
       touched,
     } = this.state;
 
-    const isMissing = required.includes(fieldKey) && !value;
-    const isInError = (isMissing || error);
+    const isRequired = required.includes(fieldKey);
+    const isEmpty = !value;
+    const isValidEmpty = !isRequired && isEmpty;
+    const isMissing = isRequired && isEmpty;
+    const hasError = (!isValidEmpty && error);
+    const isInError = (isMissing || hasError);
     const touchedOrValidated = (touched || wasValidated)
     const shouldDisplay = isInError && touchedOrValidated;
 
