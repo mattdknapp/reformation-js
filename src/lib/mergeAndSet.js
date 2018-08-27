@@ -14,19 +14,35 @@ const replaceAtIndex = ({
   );
 };
 
+const isNumber = (val) => !isNaN(val) && typeof val === 'number';
+
+const isLastFieldIndexOfArray = (state, numberKey, isLastField) => {
+  const isStateArray = Array.isArray(state);
+  const isIndexOfArray = isStateArray && isNumber(numberKey);
+  return isLastField && isIndexOfArray;
+};
+
 const mergeAndSet = ({state, field, value}) => {
   const fieldArray = Array.isArray(field) ? field : field.replace('#/', '').split('/');
   const currentKey = fieldArray[0];
+  const numberKey = Number(currentKey);
   const fieldsRemaining = fieldArray.length;
-  if(fieldsRemaining === 1){
+  const isLastField = fieldsRemaining === 1;
+  if(isLastFieldIndexOfArray(state, numberKey, isLastField)) {
+    return replaceAtIndex({
+      array: state,
+      index: numberKey,
+      value,
+    });
+  }
+  if(isLastField){
     return Object.assign({}, state, {
       [currentKey]: value
     });
   }
   const newFieldArray = fieldArray.slice(1, fieldsRemaining);
-  const numberKey = Number(currentKey);
 
-  if(!isNaN(numberKey) && typeof numberKey === 'number') {
+  if(isNumber(numberKey)) {
     const newValue = mergeAndSet({
       state: state && state[numberKey],
       field: newFieldArray,
