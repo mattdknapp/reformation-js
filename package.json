@@ -1,12 +1,12 @@
 {
   "name": "reformation-js",
-  "version": "0.0.25",
+  "version": "0.0.30",
   "description": "A simple libary for generating html forms from JSON Schema using React.",
   "main": "./dist/index.js",
   "scripts": {
     "test": "mocha --require babel-core/register --require test/bootstrap.js --recursive",
     "build": "node_modules/.bin/babel src -d dist/",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -22,9 +22,9 @@
     "bootstrap": "^4.0.0"
   },
   "dependencies": {
-    "ajv": "^6.3.0",
+    "ajv": "^6.5.4",
     "bootstrap": "^4.1.1",
-    "react": "^16.2.0",
+    "react": "^16.5.2",
     "react-dom": "^16.4.0",
     "react-proptypes": "^1.0.0"
   },
