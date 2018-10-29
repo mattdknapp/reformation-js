@@ -27,6 +27,7 @@ const childPropsMap = {
   'required': 'required',
   'wasValidated': 'wasValidated',
   'renderedSeperately': 'renderedSeperately',
+  'fieldId': 'fieldId'
 };
 
 const childPropsKeys = Object.keys(childPropsMap);

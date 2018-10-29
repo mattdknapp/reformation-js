@@ -31,6 +31,15 @@ const getFieldSize = (entry) => {
   }
 };
 
+const getFieldId = (entry) => {
+  if(!entry.formMeta || !entry.formMeta.htmlId) {
+    // autogenerate id / for in the future
+    return;
+  }
+
+  return entry.formMeta.htmlId;
+}
+
 const eventKeys = [
   'value',
   'path',
@@ -252,6 +261,7 @@ class FormField extends React.Component {
             required={required}
             wasValidated={wasValidated}
             renderedSeperately={renderedSeperately}
+            fieldId={getFieldId(schema)}
           />
         );
       case 'boolean':
@@ -267,6 +277,7 @@ class FormField extends React.Component {
             hideLabel={hideLabel}
             required={required}
             wasValidated={wasValidated}
+            fieldId={getFieldId(schema)}
           />
         );
       case 'object':
