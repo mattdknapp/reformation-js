@@ -1,5 +1,5 @@
 # reformation-js
-A simple libary for generating html forms from JSON Schema using React and
+A simple library for generating html forms from JSON Schema using React and
 Bootstrap.
 
 # Installation
