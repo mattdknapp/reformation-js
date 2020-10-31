@@ -1,193 +1,164 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Reference from '../lib/Reference';
-import translateReferences from '../lib/TranslateReferences';
-import Ajv from 'ajv';
-import Form from './Form';
-import CheckBox from './CheckBox';
-import StringInput from './StringInput';
-import FormTable from './FormTable/Table';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Reference from '../lib/Reference'
+import translateReferences from '../lib/TranslateReferences'
+import Ajv from 'ajv'
+import Form from './Form'
+import CheckBox from './CheckBox'
+import StringInput from './StringInput'
+import FormTable from './FormTable/Table'
 
-const rawAjv = new Ajv();
+const rawAjv = new Ajv()
 
 const getFieldSize = (entry) => {
-  if(!entry.formMeta) {
-    return 'col-sm-12';
+  if (!entry.formMeta) {
+    return 'col-sm-12'
   }
 
-  switch(entry.formMeta.size) {
+  switch (entry.formMeta.size) {
     case 'full':
-      return 'col-sm-12';
+      return 'col-sm-12'
     case 'large':
-      return 'col-sm-8';
+      return 'col-sm-8'
     case 'medium':
-      return 'col-sm-6';
+      return 'col-sm-6'
     case 'small':
-      return 'col-sm-4';
+      return 'col-sm-4'
     case 'xSmall':
-      return 'col-sm-2';
+      return 'col-sm-2'
     default:
-      return 'col-sm-12';
+      return 'col-sm-12'
   }
-};
-
-const getFieldId = (entry) => {
-  if(!entry.formMeta || !entry.formMeta.htmlId) {
-    // autogenerate id / for in the future
-    return;
-  }
-
-  return entry.formMeta.htmlId;
 }
 
-const eventKeys = [
-  'value',
-  'path',
-  'event',
-  'field',
-];
+const getFieldId = (entry) => {
+  if (!entry.formMeta || !entry.formMeta.htmlId) {
+    // autogenerate id / for in the future
+    return
+  }
+
+  return entry.formMeta.htmlId
+}
+
+const eventKeys = ['value', 'path', 'event', 'field']
 
 const keyCheck = (pre, next) => {
-  return pre && eventKeys.includes(next);
-};
+  return pre && eventKeys.includes(next)
+}
 
 const eventIsProcessed = (event) => {
-  const keys = Object.keys(event);
+  const keys = Object.keys(event)
 
-  return keys.reduce(keyCheck, true);
-};
+  return keys.reduce(keyCheck, true)
+}
 
-const isValid = ({
-  schema,
-  value,
-  error,
-  getRootSchema,
-  validator,
-}) => {
-  if(error) {
-    return error;
+const isValid = ({ schema, value, error, getRootSchema, validator }) => {
+  if (error) {
+    return error
   }
 
-  const ajv = validator || rawAjv;
+  const ajv = validator || rawAjv
 
-  const shouldValidate = schema && schema.type !== 'object';
+  const shouldValidate = schema && schema.type !== 'object'
 
-  if(shouldValidate) {
+  if (shouldValidate) {
     const safeSchema = translateReferences({
       schema,
-      originalSchema: getRootSchema()
-    });
-    return ajv.validate(safeSchema, value);
+      originalSchema: getRootSchema(),
+    })
+    return ajv.validate(safeSchema, value)
   }
 
-  return true;
-};
+  return true
+}
 
 const processValue = (target) => {
-  if(!target) {
-    return null;
+  if (!target) {
+    return null
   }
 
-  const {
-    value,
-    type,
-  } = target;
+  const { value, type } = target
 
-  if(type === 'checkbox') {
-    return !(value === 'on');
+  if (type === 'checkbox') {
+    return !(value === 'on')
   }
 
-  return value;
-};
+  return value
+}
 
 class FormField extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       innerSchema: null,
-    };
+    }
 
-    this.getRefs = this.getRefs.bind(this);
-    this.newPath = this.newPath.bind(this);
-    this.getInnerSchema = this.getInnerSchema.bind(this);
+    this.getRefs = this.getRefs.bind(this)
+    this.newPath = this.newPath.bind(this)
+    this.getInnerSchema = this.getInnerSchema.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.setState({
       innerSchema: this.getInnerSchema(),
-    });
+    })
   }
 
-  shouldComponentUpdate(nextProps) {
-    const {
-      dataRef,
-      errorRef,
-      wasValidated,
-      path,
-    } = this.getRefs();
+  shouldComponentUpdate (nextProps) {
+    const { dataRef, errorRef, wasValidated, path } = this.getRefs()
 
-    const {
-      dataRef: nextDataRef,
-      errorRef: nextErrorRef,
-    } = this.getRefs(nextProps);
+    const { dataRef: nextDataRef, errorRef: nextErrorRef } = this.getRefs(
+      nextProps,
+    )
 
-    const dataHasChanged = dataRef.valueOrElse('') !== nextDataRef.valueOrElse('');
-    const errorHasChanged = errorRef.valueOrElse('') !== nextErrorRef.valueOrElse('');
-    const validationRun = wasValidated !== nextProps.wasValidated;
-    const pathChanged = path !== nextProps.path;
+    const dataHasChanged =
+      dataRef.valueOrElse('') !== nextDataRef.valueOrElse('')
+    const errorHasChanged =
+      errorRef.valueOrElse('') !== nextErrorRef.valueOrElse('')
+    const validationRun = wasValidated !== nextProps.wasValidated
+    const pathChanged = path !== nextProps.path
 
-    return (dataHasChanged || errorHasChanged || validationRun || pathChanged);
+    return dataHasChanged || errorHasChanged || validationRun || pathChanged
   }
 
-  newPath() {
-    const {
-      path,
-      fieldKey,
-    } = this.props;
+  newPath () {
+    const { path, fieldKey } = this.props
 
-    return `${path}/${fieldKey}`;
+    return `${path}/${fieldKey}`
   }
 
-  getRefs(nextProps) {
-    const {
-      formState,
-      formErrors,
-    } = nextProps || this.props;
+  getRefs (nextProps) {
+    const { formState, formErrors } = nextProps || this.props
 
-    const newPath = this.newPath();
-    const dataRef = Reference({ path: newPath, schema: formState });
-    const errorRef = Reference({ path: newPath, schema: formErrors });
+    const newPath = this.newPath()
+    const dataRef = Reference({ path: newPath, schema: formState })
+    const errorRef = Reference({ path: newPath, schema: formErrors })
 
     return {
       dataRef,
       errorRef,
-    };
+    }
   }
 
-  getInnerSchema() {
-    const {
-      schema,
-      getRootSchema,
-    } = this.props;
+  getInnerSchema () {
+    const { schema, getRootSchema } = this.props
 
-    const {
-      innerSchema,
-    } = this.state;
+    const { innerSchema } = this.state
 
-    if(innerSchema) {
-      return innerSchema;
+    if (innerSchema) {
+      return innerSchema
     }
 
-    if(schema.$ref) {
-      const ref = Reference({ path: schema.$ref, schema: getRootSchema() });
-      return ref.value();
+    if (schema.$ref) {
+      const ref = Reference({ path: schema.$ref, schema: getRootSchema() })
+      return ref.value()
     }
 
-    return schema;
+    return schema
   }
 
-  render() {
+  render () {
     const {
       schema,
       fieldKey,
@@ -201,50 +172,43 @@ class FormField extends React.Component {
       wasValidated,
       required,
       renderedSeperately,
-    } = this.props;
+    } = this.props
 
-    const innerSchema = this.getInnerSchema();
+    const innerSchema = this.getInnerSchema()
 
-    const {
-      type,
-      title,
-      description,
-    } = innerSchema;
+    const { type, title, description } = innerSchema
 
-    const {
-      dataRef,
-      errorRef,
-    } = this.getRefs();
+    const { dataRef, errorRef } = this.getRefs()
 
-    const newPath = this.newPath();
-    const value = dataRef.valueOrElse('');
-    const error = errorRef.valueOrElse(null);
+    const newPath = this.newPath()
+    const value = dataRef.valueOrElse('')
+    const error = errorRef.valueOrElse(null)
     const valid = isValid({
       schema: innerSchema,
       error,
       value,
       getRootSchema,
       validator,
-    });
+    })
 
     const handleChange = (eventData) => {
-      if(eventIsProcessed(eventData)) {
-        return onChange(eventData);
+      if (eventIsProcessed(eventData)) {
+        return onChange(eventData)
       }
 
-      const value = processValue(eventData.target);
+      const value = processValue(eventData.target)
 
       onChange({
         path: newPath,
         field: fieldKey,
         event: eventData,
         value,
-      });
-    };
+      })
+    }
 
-    const ajv = validator || rawAjv;
+    const ajv = validator || rawAjv
 
-    switch(type) {
+    switch (type) {
       case 'string':
         return (
           <StringInput
@@ -263,7 +227,7 @@ class FormField extends React.Component {
             renderedSeperately={renderedSeperately}
             fieldId={getFieldId(schema)}
           />
-        );
+        )
       case 'boolean':
         return (
           <CheckBox
@@ -279,10 +243,10 @@ class FormField extends React.Component {
             wasValidated={wasValidated}
             fieldId={getFieldId(schema)}
           />
-        );
+        )
       case 'object':
-        return ([
-          <hr key={`hr-${fieldKey}`}/>,
+        return [
+          <hr key={`hr-${fieldKey}`} />,
           <Form
             key={`form-${fieldKey}`}
             schema={innerSchema}
@@ -295,8 +259,8 @@ class FormField extends React.Component {
             getRootSchema={getRootSchema}
             validator={ajv}
             wasValidated={wasValidated}
-          />
-        ]);
+          />,
+        ]
       case 'array':
         return (
           <FormTable
@@ -312,18 +276,15 @@ class FormField extends React.Component {
             getRootSchema={getRootSchema}
             wasValidated={wasValidated}
           />
-        );
+        )
       default:
-        return '';
+        return ''
     }
   }
-};
+}
 
 FormField.propTypes = {
-  schema: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
-  ]).isRequired,
+  schema: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
   path: PropTypes.string,
   formState: PropTypes.object,
   formErrors: PropTypes.object,
@@ -335,6 +296,6 @@ FormField.propTypes = {
   wasValidated: PropTypes.bool,
   required: PropTypes.array,
   renderedSeperately: PropTypes.bool,
-};
+}
 
-export default FormField;
+export default FormField

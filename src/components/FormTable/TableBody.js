@@ -1,42 +1,33 @@
-import React from 'react';
-import TextField from '../TextField';
-import FormField from '../FormField';
+import React from 'react'
+import TextField from '../TextField'
+import FormField from '../FormField'
 
 const getKeysFromSchema = (schema) => {
-  const items = schema.items;
-  const properties = items ? items.properties : {};
+  const items = schema.items
+  const properties = items ? items.properties : {}
 
-  return Object.keys(properties);
-};
+  return Object.keys(properties)
+}
 
-class TableRow extends React.Component{
+class TableRow extends React.Component {
   constructor(props) {
-    super(props);
-    this.remove = this.remove.bind(this);
+    super(props)
+    this.remove = this.remove.bind(this)
   }
 
   shouldComponentUpdate(nextProps) {
     // Index comparison is important for managing row deletion.
-    const {
-      value,
-      index,
-    } = this.props;
+    const { value, index } = this.props
 
-    const {
-      value: nextValue,
-      index: nextIndex,
-    } = nextProps;
+    const { value: nextValue, index: nextIndex } = nextProps
 
-    return (value !== nextValue || index !== nextIndex);
+    return value !== nextValue || index !== nextIndex
   }
 
   remove(event) {
-    const {
-      removeItem,
-      index,
-    } = this.props;
+    const { removeItem, index } = this.props
 
-    removeItem(event, index);
+    removeItem(event, index)
   }
 
   render() {
@@ -45,24 +36,19 @@ class TableRow extends React.Component{
       fieldKey,
       path,
       schema,
-      schema: {
-        items
-      },
-    } = this.props;
+      schema: { items },
+    } = this.props
 
-    const keys = getKeysFromSchema(schema);
+    const keys = getKeysFromSchema(schema)
 
     return (
       <tr>
         {keys.map((key, i) => {
-          const val = value[key];
+          const val = value[key]
           return (
-            <td
-              key={i}
-              className="text-center align-middle"
-            >
+            <td key={i} className="text-center align-middle">
               <FormField
-                { ...this.props }
+                {...this.props}
                 schema={items.properties[key]}
                 fieldKey={key}
                 value={val}
@@ -71,7 +57,7 @@ class TableRow extends React.Component{
                 required={items.required}
               />
             </td>
-          );
+          )
         })}
         <td className="text-center align-middle">
           <button
@@ -85,24 +71,19 @@ class TableRow extends React.Component{
       </tr>
     )
   }
-};
+}
 
 const TableBody = (props) => {
-  const {
-    properties,
-    value,
-    removeItem,
-    path,
-  } = props;
+  const { properties, value, removeItem, path } = props
 
-  const safeValue = value || [];
+  const safeValue = value || []
 
   return (
     <tbody>
       {safeValue.map((val, i) => {
-        return(
+        return (
           <TableRow
-            { ...props }
+            {...props}
             value={val}
             key={i}
             index={i}
@@ -110,10 +91,10 @@ const TableBody = (props) => {
             path={`${path}/${i}`}
             fieldPath={path}
           />
-        );
+        )
       })}
     </tbody>
-  );
-};
+  )
+}
 
-export default TableBody;
+export default TableBody

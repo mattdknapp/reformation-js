@@ -1,110 +1,92 @@
-import React from 'react';
-import RadioButtons from './RadioButtons';
-import Select from './Select';
-import TextField from './TextField';
-import TextArea from './TextArea';
-import Reference from '../lib/Reference';
+import React from 'react'
+import RadioButtons from './RadioButtons'
+import Select from './Select'
+import TextField from './TextField'
+import TextArea from './TextArea'
+import Reference from '../lib/Reference'
 
 const inputMap = {
   radioButtons: RadioButtons,
   textField: TextField,
   textarea: TextArea,
   select: Select,
-};
+}
 
 // from -> to
 const childPropsMap = {
-  'title': 'label',
-  'label': 'explicitLabel',
-  'fieldKey': 'fieldKey',
-  'groupClass': 'groupClass',
-  'handleChange': 'onChange',
-  'description': 'placeholder',
-  'value': 'value',
-  'schema': 'schema',
-  'error': 'error',
-  'hideLabel': 'hideLabel',
-  'required': 'required',
-  'wasValidated': 'wasValidated',
-  'renderedSeperately': 'renderedSeperately',
-  'fieldId': 'fieldId'
-};
+  title: 'label',
+  label: 'explicitLabel',
+  fieldKey: 'fieldKey',
+  groupClass: 'groupClass',
+  handleChange: 'onChange',
+  description: 'placeholder',
+  value: 'value',
+  schema: 'schema',
+  error: 'error',
+  hideLabel: 'hideLabel',
+  required: 'required',
+  wasValidated: 'wasValidated',
+  renderedSeperately: 'renderedSeperately',
+  fieldId: 'fieldId',
+}
 
-const childPropsKeys = Object.keys(childPropsMap);
-const filterFunc = (key) => childPropsKeys.includes(key);
+const childPropsKeys = Object.keys(childPropsMap)
+const filterFunc = (key) => childPropsKeys.includes(key)
 const reduceFuncFactory = (props) => {
   return (pre, next) => {
-    const nextKey = childPropsMap[next];
-    const nextValue = props[next];
+    const nextKey = childPropsMap[next]
+    const nextValue = props[next]
     return {
       ...pre,
-      [nextKey]: nextValue
-    };
-  };
-};
+      [nextKey]: nextValue,
+    }
+  }
+}
 
 const getEnums = (schema, getRootSchema) => {
-  if(!schema.enum) {
-    return {};
+  if (!schema.enum) {
+    return {}
   }
 
-  switch(Array.isArray(schema.enum)) {
+  switch (Array.isArray(schema.enum)) {
     case true:
-      return { enums: schema.enum };
+      return { enums: schema.enum }
     case false:
-      const path = schema.enum.$ref;
-      const enums = Reference({ path: path, schema: getRootSchema() });
-      return { enums: enums.value() };
+      const path = schema.enum.$ref
+      const enums = Reference({ path: path, schema: getRootSchema() })
+      return { enums: enums.value() }
   }
-};
+}
 
 const getFieldProps = (props) => {
-  const {
-    schema,
-    getRootSchema,
-    required,
-  } = props;
+  const { schema, getRootSchema, required } = props
 
-  const enums = getEnums(schema, getRootSchema);
-  const keys = Object.keys(props);
-  const filteredKeys = keys.filter(filterFunc);
-  const reduceFunc = reduceFuncFactory({ ...props, ...schema });
-  return filteredKeys.reduce(reduceFunc, enums);
-};
+  const enums = getEnums(schema, getRootSchema)
+  const keys = Object.keys(props)
+  const filteredKeys = keys.filter(filterFunc)
+  const reduceFunc = reduceFuncFactory({ ...props, ...schema })
+  return filteredKeys.reduce(reduceFunc, enums)
+}
 
 const StringInput = (props) => {
-  const {
-    schema,
-    getRootSchema,
-    value
-  } = props;
+  const { schema, getRootSchema, value } = props
 
-  const {
-    formMeta
-  } = schema;
+  const { formMeta } = schema
 
   const fieldProps = getFieldProps({
     ...props,
-    ...schema
-  });
+    ...schema,
+  })
 
-  if(formMeta && formMeta.viewAs) {
-    return inputMap[formMeta.viewAs](fieldProps);
+  if (formMeta && formMeta.viewAs) {
+    return inputMap[formMeta.viewAs](fieldProps)
   }
 
-  if(schema.enum) {
-    return (
-      <Select
-        { ...fieldProps }
-      />
-    )
+  if (schema.enum) {
+    return <Select {...fieldProps} />
   }
 
-  return (
-    <TextField
-      { ...fieldProps }
-    />
-  )
-};
+  return <TextField {...fieldProps} />
+}
 
-export default StringInput;
+export default StringInput

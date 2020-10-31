@@ -1,19 +1,15 @@
-import React from 'react';
+import React from 'react'
 
 const getHeader = ([key, value]) => {
-  return value.title || '';
-};
+  return value.title || ''
+}
 
-const getData = (properties) => (
-  Object.entries(properties).map(getHeader)
-);
+const getData = (properties) => Object.entries(properties).map(getHeader)
 
 const TableHeader = (props) => {
-  const {
-    properties,
-  } = props;
+  const { properties } = props
 
-  const headers = getData(properties);
+  const headers = getData(properties)
 
   return (
     <thead>
@@ -25,12 +21,10 @@ const TableHeader = (props) => {
             </th>
           )
         })}
-        <th>
-          Delete
-        </th>
+        <th>Delete</th>
       </tr>
     </thead>
-  );
-};
+  )
+}
 
-export default TableHeader;
+export default TableHeader

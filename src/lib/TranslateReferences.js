@@ -1,48 +1,19 @@
-import Reference from './Reference';
+import Reference from './Reference'
 
-const translateReferences = ({
-  schema,
-  path,
-  originalSchema
-}) => {
-  const startingPath = path || '#';
-  return translate({
-    schema,
-    path: startingPath,
-    originalSchema });
-};
-
-const convertRef = ({
-  schema,
-  path,
-}) => {
-  return Reference({ schema, path }).value();
-};
-
-const translateNextLevel = ({
-  originalSchema,
-  key,
-  value,
-  path,
-}) => {
-  const nextPath = `${path}/${key}`;
+const translateNextLevel = ({ originalSchema, key, value, path }) => {
   const translatedVal = translate({
     schema: value,
     path: `${path}/${key}`,
     originalSchema,
-  });
-  return ({
-    [key]: translatedVal
   })
-};
+  return {
+    [key]: translatedVal,
+  }
+}
 
-const reduceEntries = ({
-  originalSchema,
-  path,
-}) => {
-
+const reduceEntries = ({ originalSchema, path }) => {
   const getValue = (nextKey, nextVal) => {
-    if(nextVal && nextVal.$ref) {
+    if (nextVal && nextVal.$ref) {
       const value = Reference({
         schema: originalSchema,
         path: nextVal.$ref,
@@ -57,20 +28,13 @@ const reduceEntries = ({
     return {
       key: nextKey,
       value: nextVal,
-    };
-  };
+    }
+  }
 
-  return (
-    pre,
-    [ nextKey, nextVal ]
-  ) => {
+  return (pre, [nextKey, nextVal]) => {
+    const { key, value } = getValue(nextKey, nextVal)
 
-    const {
-      key,
-      value
-    } = getValue(nextKey, nextVal);
-
-    if(!Array.isArray(value) && typeof value === 'object') {
+    if (!Array.isArray(value) && typeof value === 'object') {
       const next = translateNextLevel({
         originalSchema,
         key,
@@ -78,43 +42,44 @@ const reduceEntries = ({
         value,
       })
 
-      return ({
+      return {
         ...pre,
-        ...next
-      });
+        ...next,
+      }
     }
 
-    if(key === '$ref') {
-      const sanatizedPath = path.split('/').reverse()[0];
-      return ({
+    if (key === '$ref') {
+      const sanatizedPath = path.split('/').reverse()[0]
+      return {
         ...pre,
         [sanatizedPath]: value,
-      });
+      }
     }
 
-    return ({
+    return {
       ...pre,
       [key]: value,
-    });
-  };
-};
-
-const translate = ({
-  schema,
-  path,
-  originalSchema,
-}) => {
-  const keys = Object.keys(schema);
-  if(keys.includes('enum')) {
+    }
   }
+}
 
-  const entries = Object.entries(schema);
+const translate = ({ schema, path, originalSchema }) => {
+  const entries = Object.entries(schema)
   const reducer = reduceEntries({
     originalSchema,
     path,
-  });
+  })
 
-  return entries.reduce(reducer, {});
-};
+  return entries.reduce(reducer, {})
+}
 
-export default translateReferences;
+const translateReferences = ({ schema, path, originalSchema }) => {
+  const startingPath = path || '#'
+  return translate({
+    schema,
+    path: startingPath,
+    originalSchema,
+  })
+}
+
+export default translateReferences

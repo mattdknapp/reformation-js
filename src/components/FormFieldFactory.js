@@ -1,51 +1,45 @@
-import React from 'react';
+import React from 'react'
 
-import FormField from './FormField';
-import Reference from '../lib/Reference';
-import translateReferences from '../lib/TranslateReferences';
+import FormField from './FormField'
+import Reference from '../lib/Reference'
+import translateReferences from '../lib/TranslateReferences'
 
-const filteredItems = [
-  'properties',
-  'items',
-];
+const filteredItems = ['properties', 'items']
 
 const filterIntermediaries = (item) => {
-  return !filteredItems.includes(item);
-};
+  return !filteredItems.includes(item)
+}
 
 const addScaffolding = (pre, next, i) => {
-  if(i === 0) {
-    return next;
+  if (i === 0) {
+    return next
   }
 
-  if(isNaN(next)) {
-    return `${pre}/properties/${next}`;
+  if (isNaN(next)) {
+    return `${pre}/properties/${next}`
   }
 
-  return `${pre}/items`;
-};
+  return `${pre}/items`
+}
 
 const createFullPath = (path) => {
-  const splitPath = path.split('/');
-  const pathLength = splitPath.length;
-  const keyIndex = pathLength - 1;
-  const key = splitPath[keyIndex];
-  const fullPath = splitPath.reduce(addScaffolding, '');
+  const splitPath = path.split('/')
+  const pathLength = splitPath.length
+  const keyIndex = pathLength - 1
+  const key = splitPath[keyIndex]
+  const fullPath = splitPath.reduce(addScaffolding, '')
 
   return {
     key,
     fullPath,
-  };
-};
+  }
+}
 
-const FormFieldFactory = ({
-  schema,
-  validator,
-}) => {
+const FormFieldFactory = ({ schema, validator }) => {
   const safeSchema = translateReferences({
     schema,
     originalSchema: schema,
-  });
+  })
 
   const FormFieldWithContext = (props) => {
     const {
@@ -57,22 +51,19 @@ const FormFieldFactory = ({
       hideLabel,
       wasValidated,
       label,
-    } = props;
+    } = props
 
-    const {
-      key,
-      fullPath,
-    } = createFullPath(path);
+    const { key, fullPath } = createFullPath(path)
 
-    const getRootSchema = () => safeSchema;
+    const getRootSchema = () => safeSchema
 
     const currentSchema = Reference({
       path: fullPath,
       schema: safeSchema,
-    });
+    })
 
-    const required = isRequired ? [key] : [];
-    const trimmedPath = path.replace(/\/[a-zA-Z0-9]*$/, '');
+    const required = isRequired ? [key] : []
+    const trimmedPath = path.replace(/\/[a-zA-Z0-9]*$/, '')
     return (
       <FormField
         schema={currentSchema.value()}
@@ -89,10 +80,10 @@ const FormFieldFactory = ({
         wasValidated={wasValidated}
         renderedSeperately={true}
       />
-    );
-  };
+    )
+  }
 
-  return FormFieldWithContext;
-};
+  return FormFieldWithContext
+}
 
-export default FormFieldFactory;
+export default FormFieldFactory

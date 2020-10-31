@@ -1,30 +1,28 @@
-import React, { Component } from 'react';
-import TableHeader from './TableHeader';
-import TableBody from './TableBody';
-import Reference from '../../lib/Reference';
+import React, { Component } from 'react'
+import TableHeader from './TableHeader'
+import TableBody from './TableBody'
+import Reference from '../../lib/Reference'
 
 const newObjectReducer = (pre, next) => {
   return {
     ...pre,
-    [next]: ''
-  };
-};
+    [next]: '',
+  }
+}
 
 const createNewItem = (schema) => {
   const {
-    items: {
-      properties
-    }
-  } = schema;
+    items: { properties },
+  } = schema
 
-  return Object.keys(properties).reduce(newObjectReducer, {});
-};
+  return Object.keys(properties).reduce(newObjectReducer, {})
+}
 
 class FormTable extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.getSafeSchema = this.getSafeSchema.bind(this);
+    this.getSafeSchema = this.getSafeSchema.bind(this)
   }
 
   getSafeSchema() {
@@ -32,27 +30,25 @@ class FormTable extends Component {
       path,
       getRootSchema,
       schema,
-      schema: {
-        items,
-      },
-    } = this.props;
+      schema: { items },
+    } = this.props
 
-    if(items['$ref']) {
+    if (items['$ref']) {
       const safeSchema = Reference({
         path: items['$ref'],
         schema: getRootSchema(),
-      });
+      })
 
       return {
         type: 'array',
         items: {
           ...safeSchema.value(),
           required: items.required,
-        }
-      };
+        },
+      }
     }
 
-    return schema;
+    return schema
   }
 
   render() {
@@ -65,50 +61,45 @@ class FormTable extends Component {
       getRootSchema,
       fieldKey,
       schema,
-    } = this.props;
+    } = this.props
 
-    const safeSchema = this.getSafeSchema();
+    const safeSchema = this.getSafeSchema()
 
     const {
-      items: { properties }
-    } = safeSchema;
+      items: { properties },
+    } = safeSchema
 
     const addItem = (event) => {
-      const newItem = createNewItem(safeSchema);
-      const newValue = [
-        ...value,
-        newItem,
-      ];
+      const newItem = createNewItem(safeSchema)
+      const newValue = [...value, newItem]
 
       onChange({
         path,
         event,
         field: fieldKey,
         value: newValue,
-      });
-    };
+      })
+    }
 
     const removeItem = (event, index) => {
-      const filterItem = (entry, i) =>  i !== index;
+      const filterItem = (entry, i) => i !== index
 
-      const newValue = value.filter(filterItem);
+      const newValue = value.filter(filterItem)
 
       onChange({
         path,
         event,
         field: fieldKey,
         value: newValue,
-      });
-    };
+      })
+    }
 
     return (
       <div className="col-sm-12">
         <table className="table table-bordered">
-          <TableHeader
-            properties={properties}
-          />
+          <TableHeader properties={properties} />
           <TableBody
-            { ...this.props }
+            {...this.props}
             schema={safeSchema}
             properties={properties}
             value={value}
@@ -123,8 +114,8 @@ class FormTable extends Component {
           Add Row
         </button>
       </div>
-    );
+    )
   }
-};
+}
 
-export default FormTable;
+export default FormTable

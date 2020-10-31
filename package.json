@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha --require babel-core/register --require test/bootstrap.js --recursive",
     "build": "node_modules/.bin/babel src -d dist/",
+    "lint": "yarn run eslint src/**/*.js src/**/*.jsx",
     "prepare": "npm run build"
   },
   "repository": {
@@ -23,19 +24,25 @@
   },
   "dependencies": {
     "ajv": "^6.5.4",
-    "bootstrap": "^4.1.2",
+    "bootstrap": "^4.5.3",
     "react": "^16.5.2",
     "react-dom": "^16.4.0",
     "react-proptypes": "^1.0.0"
   },
   "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-preset-env": "1.6.1",
-    "babel-preset-react": "6.24.1",
-    "babel-preset-stage-2": "6.24.1",
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^7.12.1",
+    "eslint-config-standard": "^16.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.21.5",
     "mocha": "^5.2.0",
     "sinon": "^5.1.0"
   }

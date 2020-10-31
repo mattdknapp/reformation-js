@@ -1,18 +1,13 @@
-import React from 'react';
-import { getErrorMessage } from '../lib/utilities';
+import React from 'react'
+import { getErrorMessage } from '../lib/utilities'
 
 const CheckedInput = (props) => {
-  const {
-    value,
-    onChange,
-    error,
-    fieldId,
-  } = props;
+  const { value, onChange, error, fieldId } = props
 
-  const invalidClass = error ? 'is-invalid' : '';
-  const fieldClasses = `form-check-input ${invalidClass}`.trim();
+  const invalidClass = error ? 'is-invalid' : ''
+  const fieldClasses = `form-check-input ${invalidClass}`.trim()
 
-  if(value) {
+  if (value) {
     return (
       <input
         className={fieldClasses}
@@ -21,7 +16,7 @@ const CheckedInput = (props) => {
         checked
         onChange={onChange}
       />
-    );
+    )
   }
 
   return (
@@ -31,21 +26,14 @@ const CheckedInput = (props) => {
       id={fieldId}
       onChange={onChange}
     />
-  );
-};
+  )
+}
 
 const CheckBox = (props) => {
-  const {
-    label,
-    fieldId,
-    groupClass,
-    error,
-    value,
-    handleChange,
-  } = props;
+  const { label, fieldId, groupClass, error, value, handleChange } = props
 
-  const errorMessage = getErrorMessage(error);
-  const groupClasses = `form-check ${String(groupClass || '')}`.trim();
+  const errorMessage = getErrorMessage(error)
+  const groupClasses = `form-check ${String(groupClass || '')}`.trim()
 
   return (
     <div className={groupClasses}>
@@ -58,11 +46,9 @@ const CheckBox = (props) => {
       <label className="form-check-label" htmlFor="test">
         {label}
       </label>
-      <div className="invalid-feedback">
-        {errorMessage}
-      </div>
+      <div className="invalid-feedback">{errorMessage}</div>
     </div>
   )
-};
+}
 
-export default CheckBox;
+export default CheckBox
