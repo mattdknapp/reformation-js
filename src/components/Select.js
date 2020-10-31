@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import ValidatedField from './ValidatedField'
 import FieldLabel from './FieldLabel'
-import { getErrorMessage } from '../lib/utilities'
 
 const Option = (props) => {
   const { value } = props
@@ -12,12 +11,15 @@ const Option = (props) => {
   return <option value={value}>{safeTitle}</option>
 }
 
+Option.propTypes = {
+  value: PropTypes.string,
+}
+
 const Select = (props) => {
   const {
     enums,
     label,
     onChange,
-    error,
     value,
     hideLabel,
     fieldId,
@@ -38,8 +40,8 @@ const Select = (props) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
       >
-        {enums.map((value, i) => {
-          return <Option value={value} key={i} />
+        {enums.map((val, i) => {
+          return <Option value={val} key={`${val}`} />
         })}
       </select>
     </Fragment>
